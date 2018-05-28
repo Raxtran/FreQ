@@ -1,0 +1,144 @@
+<div class="content" *ngIf="exists">
+  <div id="left">
+
+    <div class="pfp">
+      <img src="{{Usuario.Picture}}" alt="perfil" width="250">
+    </div>
+    <div class="BGbox">
+      <div>
+        <a id="Username">{{Usuario.Username}}</a>
+      </div>
+      <div class="Bio">
+        <a class="bio-text">{{Usuario.Bio}}</a>
+      </div>
+      <div class="Domina">
+        <a class="catdomTT">Categorias que domina este usuario:</a>
+        <div class="catdom" *ngFor="let Categoria of Categorias">
+          <a routerLink="/Categorias/{{Categoria.nombre}}">
+            {{Categoria.nombre}}
+          </a>
+        </div>
+      </div>
+
+      <div class="subtagEmotes">
+        <a class="emoText">{{Usuario.Likes}}
+          <img class="emote" src="../../assets/Img/Like.png">
+        </a>
+        <a class="emoText">{{Usuario.Usefull}}
+          <img class="emote" src="../../assets/Img/Usefull.png">
+        </a>
+        <a class="emoText">{{Usuario.Dislikes}}
+          <img class="emote" src="../../assets/Img/Dislike.png">
+        </a>
+      </div>
+
+
+    </div>
+  </div>
+  <!-- /.col-sm-4 -->
+  <div class="Center">
+
+    <div class="Center-top">
+      <div class="form">
+        <form action="" class="Center-top-Categorias">
+          <div class="cajasCategorias" *ngFor="let Categoria of Categorias">
+            <input class="radio" type="radio" name="Elegido" value="{{Categoria.nombre}}">
+            <a class="nombreClases">{{Categoria.nombre}} </a>
+          </div>
+        </form>
+      </div>
+
+      <button class="Enviar"> Enviar</button>
+      <div class="text">
+        <textarea class="inputtext" placeholder="¿Qué vas a preguntar hoy?"> </textarea>
+      </div>
+    </div>
+    <div class="Chooses">
+      <div *ngFor="let Categoria of Categorias">
+        <button class="Chooses-opciones">
+          {{Categoria.nombre}}
+        </button>
+      </div>
+      <div>
+        <button class="CRoSR" (click)="getPreguntas()" >{{hayRespuestas}}</button>
+      </div>
+    </div>
+    <div class="Center-bottom" *ngFor="let pregunta of Preguntas">
+
+      <!-- Iria aqui si no fuera por las respuestas-->
+      <div class="Preguntas">
+        <div class="Preguntas-text">
+          {{pregunta.Texto}}
+        </div>
+
+        <div class="subtagEmotes pregunta-emotes-box">
+          <div>
+            <button class="buttonemote">
+
+              <a class="emoText pregunta-emotes">{{pregunta.Likes}}
+                <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
+              </a>
+            </button>
+            <button class="buttonemote">
+
+              <a class="emoText pregunta-emotes">{{pregunta.Usefull}}
+                <img class="emote pregunta-emote" src="../../assets/Img/Usefull.png">
+              </a>
+            </button>
+            <button class="buttonemote">
+
+              <a class="emoText pregunta-emotes">{{pregunta.Dislikes}}
+                <img class="emote pregunta-emote" src="../../assets/Img/Dislike.png">
+              </a>
+            </button>
+          </div>
+          <div class="Autor">
+            ~ {{pregunta.UserPreg}} sobre {{pregunta.Categoria}}
+          </div>
+        </div>
+      </div>
+      <div class="Respuesta" *ngIf="hayRespuestas != 'Con respuesta'">
+        <div class="Preguntas-text">
+          {{pregunta.rText}}
+        </div>
+
+        <div class="subtagEmotes " >
+          <div>
+            <button class="buttonemote">
+              <a class="emoText pregunta-emotes">{{pregunta.rLikes}}
+                <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
+              </a>
+            </button>
+            <button class="buttonemote">
+              <a class="emoText pregunta-emotes">{{pregunta.rUseful}}
+                <img class="emote pregunta-emote" src="../../assets/Img/Usefull.png">
+              </a>
+            </button>
+            <button class="buttonemote">
+              <a class="emoText pregunta-emotes">{{pregunta.rDislikes}}
+                <img class="emote pregunta-emote" src="../../assets/Img/Dislike.png">
+              </a>
+            </button>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div *ngIf="Preguntas == 0">
+      <div class="Center-bottom no-texts">
+        <h1>{{Usuario.Username}} aun no tiene preguntas...</h1> <h1>(ᴗ  ͟ʖᴗ) </h1>
+      </div>
+    </div>
+
+  </div>
+  <!-- /.col-sm-4 -->
+</div>
+<div class="errorContent" *ngIf="!exists">
+
+  <div class="error">
+    <i> Como que te has equivocado amiguillo......</i>
+    <h1>Este perfil no existe... </h1>
+    <img src="https://media1.tenor.com/images/69a85e1aae9d14d6f5a1a73e03a0e148/tenor.gif?itemid=8702984">
+  </div>
+</div>

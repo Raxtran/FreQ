@@ -1,0 +1,59 @@
+
+.top-bar{
+    background-color: #f07049 !important;
+    border-bottom: 1px solid #8AACB5;
+    
+}
+.intrabar{
+    background-color:#008DB1 ;
+    border-color:#00536B;
+    border: 1px solid rgb(7, 94, 116);
+    font-size: 18px;
+    border-radius: 2px !important;
+    display: flex;
+    justify-content: center !important;
+    align-content: center !important;
+    height: 43px !important;
+    width: 180px !important;
+    margin-top: 4px;
+    margin-right: -28px;
+}
+
+.intrabar:hover{
+    background-color:rgb(6, 188, 233) ;
+    font-size: 19px !important;
+    color:  #afeffc !important;   
+    width: 190px !important;
+}
+#Logo{
+    margin-top: -12px;
+    margin-left: 5px; 
+    border-radius: 12px;
+    width:87px;
+}
+li{
+    margin-right: 0px !important;
+}
+.navbar-inner{
+    height: 70px !important;
+}
+.nav-user{
+    float: right;
+    margin-top:25px;
+    font-size: 20px;
+}
+.user{
+    color: rgb(58, 58, 58) ; 
+}
+.cerrarSesion{
+    font-size: 15px !important;
+    color: rgb(58, 58, 58) ; 
+}
+.cerrarSesion:hover{
+    color: whitesmoke;
+    font-weight: bold;
+}
+.user:hover{
+    color: white;
+    font-weight: bold;
+}

@@ -1,0 +1,264 @@
+.content{
+    display: flex;
+}
+.BGbox{
+    background-color: #ffffff;
+    border: 1px solid #727A7D;
+    box-shadow: 1px;
+    --box-shadow-color: #11637A;
+    display: flex;
+    align-content: center;
+    width: 250px;
+    border-radius: 6px;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 15vh;
+    padding: 15px 0px 0px 7px;
+    max-height: 100%;
+    
+    
+}
+#left{
+    display: flex;
+    flex-direction: column;
+    margin-left: 2%;
+    
+}
+
+img{
+    height: 172px;
+    border-radius: 6px;
+    
+}
+#Username{
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    padding-left:15px;
+
+}
+.pfp{
+    margin-bottom: 20px;
+    background-color: #ffffff;
+    
+    border: 1px solid #727A7D;
+    box-shadow: 1px;
+    --box-shadow-color: #11637A;
+    border-radius: 6px;
+}
+.Bio{
+    padding-top: 15px !important;
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+}
+.bio-text{
+    color: black;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+a{
+    color: #0088cc
+}
+.Center{
+    margin-left: 2%;
+    width: 72%;
+
+}
+.Center-top{
+    background-color: #ebebeb;
+    border: 1px solid #727A7D;
+    margin-bottom: 2%;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding-top:15px;
+   
+    border-radius: 6px;
+
+}
+.Center-top-Categorias{
+    display: flex;
+    flex-direction: row;
+}
+.form{
+    width:80%;
+}
+
+.Enviar{
+    background-color:#72BB53 ;
+    border: 1px solid #5B9741;
+    box-shadow: 1px;
+    --box-shadow-color: #819876;
+    width: 95px;
+    height: 30px;
+    border-radius: 6px;
+}
+.Enviar:hover{
+    background-color:rgb(88, 151, 60) ;
+    border: 1px solid rgb(78, 138, 50);
+    box-shadow: 1px;
+    --box-shadow-color: #5c7450;
+    color: rgb(184, 184, 184);
+    border-radius: 6px;
+}
+a{
+    text-decoration: none;
+}
+.catdom{
+    margin: 2px;
+    margin-top: 5px;
+}
+.Domina{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-top:15px;
+    margin-bottom: 15px;
+}
+.catdomTT{
+    color:black;
+    font-weight: bold;
+}
+.text{
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+.inputtext{
+    color:black;
+    width: 90%;
+    height: 104px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 2px dashed black;
+}
+.nombreClases{
+    margin-left: 3px;
+    margin-right: 15px;
+}
+.radio{
+    width: 25px;
+    margin-top:-0px !important; 
+}
+.cajasCategorias{
+    display: flex;
+    flex-wrap: nowrap;
+}
+.emote{
+    width: 25px;
+    height: 25px;
+    
+}
+.emoText{
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+    margin-bottom: 15px;
+    margin-left: 15px;
+}.subtagEmotes{
+    display: flex;
+    flex-direction: row;
+    margin-left: 23px;
+    margin-bottom: 05px !important ;
+}
+.Center-bottom{
+    background-color: #004E63;
+    display: flex;
+    padding-left: 2px;
+    align-items: flex-end;
+    flex-direction: column;
+}
+.Preguntas{
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    width: 80%;
+
+    margin:15px 30px 15px 15px ;
+}
+.Preguntas-text{
+    color: black;
+    font-weight: bold;
+    margin:9px;
+    width: 100%;
+}
+.pregunta-emotes{
+    font-size: 15px !important;
+}
+.pregunta-emote{
+    width: 20px;
+    height: 20px ;
+}
+.Autor{
+    font-style: italic;
+    font-weight: normal;
+    color: black;
+    margin-right: 15px;
+}
+.Respuesta{
+    background-color: #aedd94;
+    width: 60%;
+    border-radius: 10px;
+    margin:0px 30px 15px 0px ;
+}
+.Center-contenido{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    
+}
+.pregunta-emotes-box{ 
+    justify-content: space-between !important ;
+}
+.Chooses{
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+.Chooses-opciones{
+    background-color: #fff !important;
+    border: 1px solid black;
+    color: black;
+    padding:2px;
+    width: 100px;
+}
+.Chooses-opciones:hover{
+    background-color: grey !important ;
+}
+.CRoSR{
+    color: white;
+    margin-left: 5px;
+    background-color: rgb(253, 143, 70);
+    border: none;
+    font-weight: bold;
+
+}
+.errorContent{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    padding-top:15%;
+}
+.error{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.no-texts{
+    height: 290px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+.buttonemote{
+    background-color: transparent;
+    border:none;   
+}
