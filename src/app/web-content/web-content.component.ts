@@ -17,16 +17,22 @@ export class WebContentComponent implements OnInit {
   private Usuario;
   private Preguntas;
   private exists: boolean = false;
-  private hayRespuestas ;
-
+  private hayRespuestas;
+  private preguntaStatus;
+  private usuario_activo;
+  private esanon;
 
   ngOnInit() {
+
+    this.esanon = "";
     let Id;
     this.activatedRoute.params.subscribe((params: Params) => {
       Id = params['id'];
     });
 
     this.getUser(Id);
+
+
   }
   getUser(Id) {
 
@@ -48,6 +54,17 @@ export class WebContentComponent implements OnInit {
     });
 
   }
+  whotext() {
+
+
+
+    if (this.esanon == 1) {
+
+    }
+    else {
+
+    }
+  }
   getPreguntas() {
 
     if (this.hayRespuestas == "Sin respuesta") {
@@ -55,9 +72,9 @@ export class WebContentComponent implements OnInit {
 
         this.Preguntas = res;
         this.hayRespuestas = "Con respuesta";
-               
+
       });
-      $(".CRoSR").css("background-color","rgb(106, 199, 63)")
+      $(".CRoSR").css("background-color", "rgb(106, 199, 63)")
     }
     else {
       this.httpc.getPreguntasDeUsuarioCR(this.Usuario.id).subscribe(res => {
@@ -65,14 +82,43 @@ export class WebContentComponent implements OnInit {
         this.hayRespuestas = "Sin respuesta";
 
       });
-            $(".CRoSR").css("background-color","rgb(253, 143, 70)")
+      $(".CRoSR").css("background-color", "rgb(253, 143, 70)")
 
     }
+  }
+  postComent(Remitente, Destinatario) {
+    var error;
 
+    var categoria = $(".radio:checked").val();
+    var text = $(".inputtext").val();
+    this.usuario_activo = this.httpc.getUsuarioConectado();
+
+
+
+
+    if (categoria == undefined) {
+      error = "Selecciona categoria";
+
+      alert(error);
+
+    } else if (text == "") {
+      error = "Escribe algo!";
+    } else if (this.esanon == "") {
+      error = "Selecciona como quieres ser identificado";
+    }
+    else {
+      /* this.httpc.postComentario(this.usuario_activo, categoria, text, this.Usuario.Username).subscribe(res => {
+         this.preguntaStatus = res;
  
+       });*/
+    }
+    if (error != undefined) {
+      alert(error);
+    }
+
+
 
   }
-
 
 
 }

@@ -10,6 +10,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { appRouting } from './app.routes';
 import { TopsComponent } from './tops/tops.component';
 import { UsersCategoriaComponent } from './users-categoria/users-categoria.component';
+import { FormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -18,12 +20,14 @@ import { UsersCategoriaComponent } from './users-categoria/users-categoria.compo
     AppNavbarComponent,
     WebContentComponent,
     TopsComponent,
-    UsersCategoriaComponent
+    UsersCategoriaComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    appRouting
+    appRouting,
+    FormsModule
   ],
   providers: [Requestes],
   bootstrap: [AppComponent]

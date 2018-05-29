@@ -1,12 +1,12 @@
 <div class="content" *ngIf="exists">
-  <div id="left">
+  <div id="left" >
 
     <div class="pfp">
       <img src="{{Usuario.Picture}}" alt="perfil" width="250">
     </div>
     <div class="BGbox">
       <div>
-        <a id="Username">{{Usuario.Username}}</a>
+        <a class="perfilDeUsuario" id="Username">{{Usuario.Username}}</a>
       </div>
       <div class="Bio">
         <a class="bio-text">{{Usuario.Bio}}</a>
@@ -35,22 +35,27 @@
 
     </div>
   </div>
-  <!-- /.col-sm-4 -->
+<!-- Formulario -->
   <div class="Center">
 
     <div class="Center-top">
       <div class="form">
         <form action="" class="Center-top-Categorias">
           <div class="cajasCategorias" *ngFor="let Categoria of Categorias">
-            <input class="radio" type="radio" name="Elegido" value="{{Categoria.nombre}}">
+            <input class="radio" type="radio" name="Categoria" value="{{Categoria.nombre}}">
             <a class="nombreClases">{{Categoria.nombre}} </a>
           </div>
+          <select class="select" [(ngModel)]='esanon' (ngModelChange)="whotext()" name="OS" >
+            <option value="1">Anónimo</option> 
+            <option class="esteUsuario" value="2">User</option>  
+         </select>
+         
         </form>
       </div>
 
-      <button class="Enviar"> Enviar</button>
+      <button type="submit" class="Enviar" (click)="postComent()"> Enviar</button>
       <div class="text">
-        <textarea class="inputtext" placeholder="¿Qué vas a preguntar hoy?"> </textarea>
+        <textarea class="inputtext" name="Texto"  placeholder="¿Qué vas a preguntar hoy?"></textarea>
       </div>
     </div>
     <div class="Chooses">
@@ -142,3 +147,13 @@
     <img src="https://media1.tenor.com/images/69a85e1aae9d14d6f5a1a73e03a0e148/tenor.gif?itemid=8702984">
   </div>
 </div>
+
+
+
+<script>
+$scope.init = function () {
+  alert("as")
+  // check if there is query in url
+  // and fire search in case its value is not empty
+};
+</script>

@@ -13,28 +13,45 @@ export class TopsComponent implements OnInit {
 
   private Usuarios;
   private Categorias = [];
-  private activaComentario: Boolean = false;
+  private activaTop: Boolean = true;
+  private Comentarios;
 
   constructor(private httpc: Requestes, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    this.initializerTops();
+  }
+
+  initializerTops() {
     let Id;
     this.activatedRoute.params.subscribe((params: Params) => {
       Id = params['id'];
     });
 
-    if (!this.activaComentario) {
+    if (this.activaTop) {
       this.getTop(Id);
+    } else {
+      this.getTopComentarios(Id);
     }
-    else {
-      this.getTopComentarios();
+  }
+  changeColor(id) {
+
+    //If top
+    if (id == 1) {
+      this.activaTop = true;
+      $("#Comentarios").css("background-color", "#008db1");
+      $("#Usuarios").css("background-color", "#EB9100");
+    } else {
+
+      this.activaTop = false;
+      $("#Comentarios").css("background-color", "#EB9100");
+      $("#Usuarios").css("background-color", "#008db1");
     }
-
-
-
+    this.initializerTops();
   }
   getTop(Id) {
-    this.activaComentario = false;
+    $("#Usuarios").css("background-color", "#EB9100");
+
 
     this.httpc.getTop(Id).subscribe(res => {
       this.Usuarios = res;
@@ -54,13 +71,17 @@ export class TopsComponent implements OnInit {
 
     });
   }
+  getTopComentarios(Id) {
+    this.httpc.getTopComentarios(Id).subscribe(res => {
+      this.Comentarios = res;
+    });
+  }
 
-  getTopComentarios() {
-    this.activaComentario = true;
-    $(".com-user").css("background-color","#96EFFF")
+  postComentario(Remitente,Destinatario){
 
-    console.log("asdasd");
-
+    
 
   }
+
+
 }

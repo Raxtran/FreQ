@@ -29,7 +29,8 @@
     height: 100%;
 }
 .subtop:hover{
-    color: rgb(36, 151, 197) !important;
+    color: rgba(216, 241, 252, 0.726) !important;
+ 
 }
 .Perfil{
     background-color: #FCA385;
@@ -44,7 +45,7 @@
     width: 100%;
 }
 .com-user:hover{
-    background-color:rgba(255, 255, 255, 0.952);
+    background-color:rgb(202, 125, 2) !important ;
 }
 .tagcontent{
     display: flex;
@@ -84,4 +85,49 @@ a{
 .Categorias{
     width: 100%;
     
+}
+
+
+
+.Preguntas{
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    width: 100%;
+    margin:15px 30px 15px 15px ;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+.Preguntas-text{
+    color: black;
+    font-weight: bold;
+    margin: 8px 0px 15px 14px;
+    width: 100%;
+}
+
+.subtagEmotes{
+    display: flex;
+    flex-direction: row;
+    margin-left: 23px;
+    margin-bottom: 05px !important ;
+}
+
+.pregunta-emotes-box{ 
+    justify-content: space-between !important ;
+}
+
+.buttonemote{
+    background-color: transparent;
+    border:none;   
+}
+
+.Autor{
+    font-style: italic;
+    font-weight: normal;
+    color: black;
+    margin-right: 15px;
+}
+.preguntado{
+    color: black;
+    margin: 5px 0px 0px 10px;
 }

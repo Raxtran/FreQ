@@ -57,3 +57,98 @@ li{
     color: white;
     font-weight: bold;
 }
+
+
+/*Clases para el fade in/out de login*/
+
+#wrap {
+    margin: 0 ;
+  }
+  
+  #regbar {
+    height: 67px;
+  }
+  
+  .subBoxLogin{
+    margin-left: 90px;
+    font-size: 18px;    
+}
+  
+  fieldset {
+    border: none;
+  }
+  
+  .login {
+    position: relative;
+    width: 280px;
+    display: none;
+  }
+  
+  .arrow-up {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 15px solid #00536B;
+    left: 10%;
+    position: absolute;
+    top: -10px;
+  }
+  
+  .formholder {
+    background: #00536B;
+    width: 100%;
+    border-radius: 5px;
+    padding-top: 5px;
+  }
+  .formholder input[type="text"], .formholder input[type="password"] {
+    padding: 7px 5px;
+    margin: 10px 0;
+    width: 100%;
+    display: block;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    -webkit-transition: 0.3s linear;
+    -moz-transition: 0.3s linear;
+    -o-transition: 0.3s linear;
+    transition: 0.3s linear;
+  }
+  .formholder input[type="email"]:focus, .formholder input[type="password"]:focus {
+    outline: none;
+    box-shadow: 0 0 1px 1px #1abc9c;
+  }
+  .formholder input[type="submit"] {
+    background: #1abc9c;
+    padding: 10px;
+    font-size: 20px;
+    display: block;
+    width: 100%;
+    border: none;
+    color: #00536B;
+    border-radius: 5px;
+  }
+  .formholder input[type="submit"]:hover {
+    background: #1bc6a4;
+  }
+  
+  .randompad {
+    padding: 10px;
+
+}
+  
+  .green {
+    color: #1abc9c;
+  }
+  
+  a {
+    color: #ecf0f1;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #1abc9c;
+  }
+  .Register{
+    text-decoration:line-through;
+    color: rgb(83, 83, 83);
+  }

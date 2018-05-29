@@ -123,7 +123,6 @@ a{
     font-weight: bold;
 }
 .text{
-
     width: 100%;
     display: flex;
     justify-content: center;
@@ -131,7 +130,7 @@ a{
 .inputtext{
     color:black;
     width: 90%;
-    height: 104px;
+    height: 100px;
     margin-bottom: 15px;
     border-radius: 10px;
     border: 2px dashed black;
@@ -261,4 +260,10 @@ a{
 .buttonemote{
     background-color: transparent;
     border:none;   
+}
+.select{
+    width: 150px;
+    height: 20px;
+    margin-top:0px;
+    padding: 0;
 }

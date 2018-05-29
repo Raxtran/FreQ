@@ -1,22 +1,22 @@
 <div class="content">
   <div class="centered">
     <div class="top">
-      <a class="com-user" (click)="inicial()" >
-        <div class="subtop" >
+      <a class="com-user" (click)="changeColor(0)" id="Comentarios">
+        <div class="subtop">
           <h1>Comentarios</h1>
         </div>
       </a>
-      <a class="com-user" (click)="inicial()">
+      <a class="com-user" (click)="changeColor(1)" id="Usuarios">
         <div class="subtop">
           <h1>Usuarios</h1>
         </div>
       </a>
     </div>
-    <div class="Boxes">
+    <div class="Boxes" *ngIf="activaTop">
       <div class="Perfil" *ngFor="let usuario of Usuarios ; let i = index ">
 
         <a href="http://localhost:4200/User/{{usuario.Username}}" class="button">
-          <div class="tagcontent" style="background-image: url('{{usuario.Banner}}'); ">
+          <div class="tagcontent" [ngStyle]="{'background-image': 'url('+usuario.Banner+')', 'background-size': 'cover' } ">
 
 
             <div>
@@ -50,5 +50,50 @@
         </a>
       </div>
     </div>
+    <div class="Boxes" *ngIf="!activaTop">
+        <div class="Preguntas" *ngFor="let comentario of Comentarios">
+      
+
+            <div class="preguntado">   
+                <h5><a href="http://localhost:4200/User/{{comentario.UserAnws}}">{{comentario.UserAnws}} </a>  <i> responde</i> </h5> 
+              </div>
+              
+            <div class="Preguntas-text">
+              {{comentario.Texto}}
+
+            </div>
+    
+            
+            <div class="subtagEmotes pregunta-emotes-box">
+              <div>
+
+                <button class="buttonemote">
+    
+                  <a class="emoText pregunta-emotes">{{comentario.Likes}}
+                    <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
+                  </a>
+                </button>
+                <button class="buttonemote">
+    
+                  <a class="emoText pregunta-emotes">{{comentario.Usefull}}
+                    <img class="emote pregunta-emote" src="../../assets/Img/Usefull.png">
+                  </a>
+                </button>
+                <button class="buttonemote">
+    
+                  <a class="emoText pregunta-emotes">{{comentario.Dislikes}}
+                    <img class="emote pregunta-emote" src="../../assets/Img/Dislike.png">
+                  </a>
+                </button>
+              </div>
+              <div class="Autor">
+                ~ <a href="http://localhost:4200/User/{{comentario.UserPreg}}">{{comentario.UserPreg}} </a> 
+                sobre <a href="http://localhost:4200/Categorias/{{comentario.Categoria}}" >{{comentario.Categoria}} </a>
+              </div>
+            </div>
+          </div>
+
+
+      </div>
+    </div>
   </div>
-</div>
