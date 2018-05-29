@@ -45,9 +45,9 @@
             <input class="radio" type="radio" name="Categoria" value="{{Categoria.nombre}}">
             <a class="nombreClases">{{Categoria.nombre}} </a>
           </div>
-          <select class="select" [(ngModel)]='esanon' (ngModelChange)="whotext()" name="OS" >
+          <select class="select" [(ngModel)]='esanon' (ngModelChange)="whotext()" name="User" >
             <option value="1">Anónimo</option> 
-            <option class="esteUsuario" value="2">User</option>  
+            <option class="esteUsuario" *ngIf="usuario_activo != undefined" value="2">{{usuario_activo}}</option>  
          </select>
          
         </form>
@@ -70,7 +70,7 @@
     </div>
     <div class="Center-bottom" *ngFor="let pregunta of Preguntas">
 
-      <!-- Iria aqui si no fuera por las respuestas-->
+      <!-- Recolect de todas las preguntas-->
       <div class="Preguntas">
         <div class="Preguntas-text">
           {{pregunta.Texto}}
@@ -126,19 +126,17 @@
             </button>
           </div>
         </div>
-
-
       </div>
     </div>
+    <!-- Si no hay preguntas!-->
     <div *ngIf="Preguntas == 0">
       <div class="Center-bottom no-texts">
         <h1>{{Usuario.Username}} aun no tiene preguntas...</h1> <h1>(ᴗ  ͟ʖᴗ) </h1>
       </div>
     </div>
-
   </div>
-  <!-- /.col-sm-4 -->
 </div>
+<!-- Si no hay perfil !-->
 <div class="errorContent" *ngIf="!exists">
 
   <div class="error">
@@ -147,13 +145,3 @@
     <img src="https://media1.tenor.com/images/69a85e1aae9d14d6f5a1a73e03a0e148/tenor.gif?itemid=8702984">
   </div>
 </div>
-
-
-
-<script>
-$scope.init = function () {
-  alert("as")
-  // check if there is query in url
-  // and fire search in case its value is not empty
-};
-</script>

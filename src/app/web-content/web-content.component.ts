@@ -24,6 +24,7 @@ export class WebContentComponent implements OnInit {
 
   ngOnInit() {
 
+    this.usuario_activo = this.httpc.getUsuarioConectado();
     this.esanon = "";
     let Id;
     this.activatedRoute.params.subscribe((params: Params) => {

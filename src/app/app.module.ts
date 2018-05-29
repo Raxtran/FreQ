@@ -11,7 +11,8 @@ import { appRouting } from './app.routes';
 import { TopsComponent } from './tops/tops.component';
 import { UsersCategoriaComponent } from './users-categoria/users-categoria.component';
 import { FormsModule } from '@angular/forms';
-import { LoginComponent } from './login/login.component';
+import { StartPageComponent } from './start-page/start-page.component';
+import { PoliticaDePrivacidadComponent } from './politica-de-privacidad/politica-de-privacidad.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { LoginComponent } from './login/login.component';
     WebContentComponent,
     TopsComponent,
     UsersCategoriaComponent,
-    LoginComponent
+    StartPageComponent,
+    PoliticaDePrivacidadComponent
   ],
   imports: [
     BrowserModule,
