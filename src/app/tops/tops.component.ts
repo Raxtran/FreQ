@@ -56,7 +56,6 @@ export class TopsComponent implements OnInit {
     this.httpc.getTop(Id).subscribe(res => {
       this.Usuarios = res;
 
-
       this.getDomCategorias(this.Usuarios);
 
     });
@@ -77,11 +76,6 @@ export class TopsComponent implements OnInit {
     });
   }
 
-  postComentario(Remitente,Destinatario){
-
-    
-
-  }
-
+  
 
 }

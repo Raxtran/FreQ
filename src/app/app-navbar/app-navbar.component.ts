@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Requestes } from '../Services/services';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import * as $ from 'jquery';
+import * as sha1 from 'js-sha1';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,8 @@ export class AppNavbarComponent implements OnInit {
   private usuario_activo;
 
   ngOnInit() {
-    this.usuario_activo = this.httpc.getUsuarioConectado();
+    this.usuario_activo = localStorage.getItem("usuario_activo");
+
   }
 
   loginShowUp() {
@@ -43,14 +45,28 @@ export class AppNavbarComponent implements OnInit {
     } else if (Pass == '') {
       alert("¡Escribe tu contraseña!");
     } else {
-      this.httpc.setUsuarioConectado(User, Pass);
-      this.usuario_activo = this.httpc.getUsuarioConectado();
+
+      this.httpc.setUsuarioConectado(User).subscribe(res => {
+      var pwd = res;
+
+
+      if(pwd == sha1(Pass) ){
+        this.httpc.setUserActivo(User);
+        this.usuario_activo = this.httpc.getUsuarioConectado();
+        
+      }else{
+        alert("¡El usuario o la contraseña son como clarita!");
+      }
+    
+      });
+
+
     }
   }
   exitUsuario() {
     this.httpc.exitUsuarioConectado();
     this.usuario_activo = this.httpc.getUsuarioConectado();
-    console.log("exit ok")
+    localStorage.removeItem("usuario_activo");
   }
   
 }

@@ -5,6 +5,7 @@ import { CategoriaComponent } from './categoria/categoria.component';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { WebContentComponent } from './web-content/web-content.component';
 import { HttpClientModule } from '@angular/common/http';
+import {HttpModule} from '@angular/http';
 import { Requestes } from './Services/services';
 import { RouterModule, Routes } from '@angular/router';
 import { appRouting } from './app.routes';
@@ -28,8 +29,9 @@ import { PoliticaDePrivacidadComponent } from './politica-de-privacidad/politica
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpModule,
     appRouting,
-    FormsModule
+    FormsModule,
   ],
   providers: [Requestes],
   bootstrap: [AppComponent]

@@ -24,7 +24,7 @@ export class WebContentComponent implements OnInit {
 
   ngOnInit() {
 
-    this.usuario_activo = this.httpc.getUsuarioConectado();
+    this.usuario_activo = localStorage.getItem("usuario_activo");
     this.esanon = "";
     let Id;
     this.activatedRoute.params.subscribe((params: Params) => {
@@ -49,24 +49,21 @@ export class WebContentComponent implements OnInit {
         //Get preguntas hacia él
 
         this.getPreguntas();
-
-
       }
     });
-
-  }
+  }  
   whotext() {
 
 
-
     if (this.esanon == 1) {
+      this.httpc.setUsuarioQuePregunta("Anon");
 
     }
     else {
-
+      this.httpc.setUsuarioQuePregunta(localStorage.getItem("usuario_activo"));      
     }
   }
-  getPreguntas() {
+getPreguntas() {
 
     if (this.hayRespuestas == "Sin respuesta") {
       this.httpc.getPreguntasDeUsuarioSR(this.Usuario.id).subscribe(res => {
@@ -92,7 +89,7 @@ export class WebContentComponent implements OnInit {
 
     var categoria = $(".radio:checked").val();
     var text = $(".inputtext").val();
-    this.usuario_activo = this.httpc.getUsuarioConectado();
+    this.usuario_activo = localStorage.getItem("usuario_activo");
 
 
 
@@ -108,10 +105,11 @@ export class WebContentComponent implements OnInit {
       error = "Selecciona como quieres ser identificado";
     }
     else {
-      /* this.httpc.postComentario(this.usuario_activo, categoria, text, this.Usuario.Username).subscribe(res => {
+
+       this.httpc.postComentario(this.httpc.getUsuarioQuePregunta(), categoria, text, this.Usuario.Username).subscribe(res => {
          this.preguntaStatus = res;
  
-       });*/
+       });
     }
     if (error != undefined) {
       alert(error);
