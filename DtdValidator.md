@@ -1,3 +1,4 @@
+``` xml 
 <?xml encoding="UTF-8"?>
 
 <!ELEMENT pma_xml_export (pma:structure_schemas,database)>
@@ -35,3 +36,4 @@
 <!ATTLIST column
   xmlns CDATA #FIXED ''
   name NMTOKEN #REQUIRED>
+```
