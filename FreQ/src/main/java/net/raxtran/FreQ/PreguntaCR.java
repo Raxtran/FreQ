@@ -2,10 +2,11 @@ package net.raxtran.FreQ;
 
 public class PreguntaCR extends Pregunta {
 
-	String rText;
-	int  rLikes ;
-	int rDislikes ;
-	int rUseful	;
+	private String rText;
+	private int  rLikes ;
+	private int rDislikes ;
+	private int rUseful	;
+	
 	public String getrText() {
 		return rText;
 	}

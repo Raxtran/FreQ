@@ -1,16 +1,16 @@
 package net.raxtran.FreQ;
 
-public class User {
+public  class User {
 	
-	int id;
-	String Username; 
-	String ContraseÃ±a;
-	String Bio; 
-	String Picture; 
-	String Banner; 
-	int Likes;
-	int Usefull; 
-	int Dislikes;
+	private int id;
+	private String Username; 
+	private String Contraseña;
+	private String Bio; 
+	private String Picture; 
+	private String Banner; 
+	private int Likes;
+	private int Usefull; 
+	private int Dislikes;
 	
 	
 	public int getId() {
@@ -25,11 +25,11 @@ public class User {
 	public void setUsername(String username) {
 		Username = username;
 	}
-	public String getContraseÃ±a() {
-		return ContraseÃ±a;
+	public String getContraseña() {
+		return Contraseña;
 	}
-	public void setContraseÃ±a(String contraseÃ±a) {
-		ContraseÃ±a = contraseÃ±a;
+	public void setContraseña(String contraseña) {
+		Contraseña = contraseña;
 	}
 	public String getBio() {
 		return Bio;
@@ -68,7 +68,7 @@ public class User {
 		Dislikes = dislikes;
 	}
 	@Override
-	public String toString() {
+	public  String toString() {
 		return "User [Username=" + Username + ", Likes=" + Likes + ", Usefull=" + Usefull + ", Dislikes=" + Dislikes
 				+ "]";
 	}

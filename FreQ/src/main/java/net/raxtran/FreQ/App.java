@@ -3,15 +3,12 @@ package net.raxtran.FreQ;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.google.gson.JsonObject;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import static spark.Spark.*;
 
-/**
- * Hello world!
- *
- */
 public class App {
+
+	static ObjectMapper mapper = new ObjectMapper();
 
 	private static void enableCORS() {
 
@@ -39,14 +36,10 @@ public class App {
 	}
 
 	public static void main(String[] args) throws SQLException {
-
-		enableCORS();
 		SqlConnector sql = new SqlConnector();
 
-
-
+		enableCORS();
 		get("/User/:id", (request, response) -> {
-
 			User usuario = sql.getUser(request.params(":id"));
 
 			return usuario;
@@ -63,7 +56,7 @@ public class App {
 			List<Categoria> categorias = sql.getCategorias();
 			return categorias;
 		}, new JsonTransform());
-		
+
 		get("/Categorias/:id", (request, response) -> {
 
 			List<User> usuarios = sql.getUsersCategoria(request.params(":id"));
@@ -81,7 +74,7 @@ public class App {
 			List<Pregunta> pregunta = sql.getPreguntasSR(request.params(":id"));
 			return pregunta;
 		}, new JsonTransform());
-		
+
 		get("/Preguntas/ConRespuesta/:id", (request, response) -> {
 
 			List<PreguntaCR> pregunta = sql.getPreguntasCR(request.params(":id"));
@@ -92,28 +85,30 @@ public class App {
 			List<Pregunta> pregunta = sql.getTopPreguntaCategoria(request.params(":id"));
 			return pregunta;
 		}, new JsonTransform());
-		
-		post("/users/post", (req, res) ->{
-	
 
-			String[] sub = req.body().split("=");
-			String[] Datos = new String[4];
-			int n= 0;
-			for(int i = 1; i<sub.length; i++) {
-				
-				String[] b = sub[i].split("&");
-				Datos[n] = b[0];
-				n++;
-			}
+		post("/users/post", (req, res) -> {
+			Pregunta datosPregunta = mapper.readValue(req.body(), Pregunta.class);
 			
-		return sql.insertPregunta(Datos);
+			return sql.insertPregunta(datosPregunta);
 		}, new JsonTransform());
-		
-		
+
 		get("/Login/:id", (request, response) -> {
 			String pswd = sql.isUserOk(request.params(":id"));
 			return pswd;
 		}, new JsonTransform());
 		
+		put("/updateVotacionP", (request, response) -> {
+		
+			Voto votacion = mapper.readValue(request.body(), Voto.class);
+
+			return sql.updateVotacionesP(votacion);
+
+		});
+		
+		put("/updateVotacionR", (request, response) -> {
+			Voto votacion = mapper.readValue(request.body(), Voto.class);
+
+			return sql.updateVotacionesR(votacion);
+		});
 	}
 }

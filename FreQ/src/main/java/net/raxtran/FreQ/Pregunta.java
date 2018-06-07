@@ -2,14 +2,14 @@ package net.raxtran.FreQ;
 
 public class Pregunta {
 
-	int id;
-	String Texto;
-	int Likes;
-	int Usefull;
-	int Dislikes;
-	String Categoria;
-	String UserPreg;
-	String UserAnws;
+	private int id;
+	private String Texto;
+	private int Likes;
+	private int Usefull;
+	private int Dislikes;
+	private String Categoria;
+	private String UserPreg;
+	private String UserAnws;
 	
 	public int getId() {
 		return id;
@@ -58,6 +58,11 @@ public class Pregunta {
 	}
 	public void setUserAnws(String string) {
 		UserAnws = string;
+	}
+	@Override
+	public String toString() {
+		return "Pregunta [id=" + id + ", Texto=" + Texto + ", Likes=" + Likes + ", Usefull=" + Usefull + ", Dislikes="
+				+ Dislikes + ", Categoria=" + Categoria + ", UserPreg=" + UserPreg + ", UserAnws=" + UserAnws + "]";
 	}
 	
 	
