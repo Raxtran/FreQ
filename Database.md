@@ -12,6 +12,11 @@ dislikes  INT,
 CONSTRAINT  user_pk  PRIMARY  KEY  (id),  
 CONSTRAINT  user_unique  UNIQUE  (username)  
 );
+CREATE TABLE Token(
+	Username varchar(30) not null,
+	Token varchar(38) not null,
+	PRIMARY key (Username, Token)
+)
 CREATE  TABLE  pregunta (  
 id  INT  NOT  NULL  auto_increment,  
 texto  VARCHAR(700)  NOT  NULL,  
