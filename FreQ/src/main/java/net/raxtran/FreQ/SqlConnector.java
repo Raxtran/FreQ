@@ -2,7 +2,10 @@ package net.raxtran.FreQ;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class SqlConnector {
 
@@ -10,10 +13,10 @@ public class SqlConnector {
 	private String Bdd = "jdbc:mysql://hl20.dinaserver.com/freq";
 	private String BddUser = "raxtran";
 	private String BddPwd = "pth34cc93";
+	private Map<String,String> tokenAndUsers = new HashMap<String,String>();
 	
 	public SqlConnector() throws SQLException {
 		conn = DriverManager.getConnection(Bdd, BddUser, BddPwd);
-
 	}
 
 	public User getUser(String Id)  {
@@ -223,7 +226,7 @@ public class SqlConnector {
 	public List<User> getUsersCategoria(String Id) {
 
 		List<User> Usuarios = new ArrayList<>();
-		String query = "SELECT u.Username, c.Nombre, u.Picture, u.Likes, u.Dislikes, u.Usefull "
+		String query = "SELECT u.Id, u.Username, c.Nombre, u.Picture, u.Likes, u.Dislikes, u.Usefull "
 					+ "FROM Categoria_user cu "
 					+ "inner join Categoria c on c.id = cu.Categoria "
 					+ "inner join User u on u.id = cu.Usuario "
@@ -236,14 +239,7 @@ public class SqlConnector {
 			ResultSet rs = p.executeQuery();
 	
 			while (rs.next()) {
-				User usuario = new User();
-	
-				usuario.setUsername(rs.getString("Username"));
-				usuario.setPicture(rs.getString("Picture"));
-				usuario.setLikes(rs.getInt("Likes"));
-				usuario.setDislikes(rs.getInt("Dislikes"));
-				usuario.setUsefull(rs.getInt("Usefull"));
-	
+				User usuario = getAllUserDataById(rs.getInt("u.Id"));
 				Usuarios.add(usuario);
 			}
 		} catch (SQLException e) {
@@ -313,21 +309,10 @@ public class SqlConnector {
 		}
 		// Si el usuario remitente que llega no es Anon, busca su id
 		if (!datosPregunta.getUserPreg().equals("Anon")) {
-			try {
-				remitente = getUserIdByUsername(datosPregunta.getUserPreg());
-			} catch (SQLException e) {
-				// Busca el Id de el usuario que no es anon
-				System.out.println("El id del usuario que buscas no existe, o es anon, o no sé, este es el error -> ("+e.getMessage()+") ");
-			}
+			remitente = getUserIdByUsername(datosPregunta.getUserPreg());
 		}
 
-		// Busca el id del usuario que responde (remitenet) a traves de su nombre
-		try {
-			destinatario = getUserIdByUsername(datosPregunta.getUserAnws());
-		} catch (SQLException e) {
-			// El usuario del destinatario es erroneo
-			System.out.println("El usuario del post al que va dirigido este post es erroneo, y eso significa que a sido editado de manera deshonesta ("+e.getMessage()+") ");
-		}
+		destinatario = getUserIdByUsername(datosPregunta.getUserAnws());
 		
 		try {
 			// Insertar los datos en pregunta
@@ -357,18 +342,28 @@ public class SqlConnector {
 
 	}
 
-	public String isUserOk(String user) {
-		String query = "Select Contraseña from User where Username = ?";
+	public String login(User usuario) {
+		String query = "Select contraseña from User where Username = ?";
 		String pswd = null;
-
+		Boolean authStatus = false;
+		String token = null;
+		
 		try {
 			PreparedStatement p = this.conn.prepareStatement(query);
 	
-			p.setString(1, user);
+			p.setString(1, usuario.getUsername());
 			ResultSet rs = p.executeQuery();
 	
 			if (rs.next()) {
 				pswd = rs.getString("Contraseña");
+				//Si las contraseñas son iguales devuelve true
+				if(pswd.equals(usuario.getContraseña())) {
+					authStatus = setToken(usuario.getUsername(),createToken());
+				}
+				//Si a podido insertar un token
+				if(authStatus) {
+					token = getToken(usuario.getUsername());
+				}
 	
 			}
 		}catch(SQLException e) {
@@ -376,9 +371,20 @@ public class SqlConnector {
 			System.out.println("Error al enviar/recibir una contraseña.... ("+e.getMessage()+")");
 		}
 
-		return pswd;
+		return token;
 	}
-
+	public Boolean logout(User usuario) {
+		String username = usuario.getUsername();
+		String token = usuario.getToken();
+		Boolean status = false;
+		
+		if(this.tokenAndUsers.get(username).equals(token)) {
+			this.tokenAndUsers.remove(username);
+			status = true;
+		}
+		return status;
+	}
+	
 	public String updateVotacionesP(Voto votacion) {
 		String query = "select Pregunta "
 				+ "from Usuario_Vota_Pregunta "
@@ -404,8 +410,10 @@ public class SqlConnector {
 				query = "Select "+votacion.getTipo()+" from Pregunta where id = ?";
 				String update = "update Pregunta set "+votacion.getTipo()+" = ? where Id = "+votacion.getPregunta();
 				
-				Integer remitente = updateVotacion(votacion,query,update);
-				
+				Integer remitente = getWhoIdByPreguntaId(votacion.getPregunta(), "UserPreg");
+			
+				updateVotacion(votacion,query,update);
+
 				//Si el remitente no es null que le sume el voto a su cuenta
 				if(remitente != 0) {
 					updateVotosUsuario(votacion,remitente);
@@ -438,11 +446,13 @@ public class SqlConnector {
 		
 		// Si NO existe ya un registro de voto, que lo INSERTE
 		if (!rs.next()) {
+			
 			query = "Select "+votacion.getTipo()+" from Respuesta where Pregunta_id = ?";
 			String update = "update Respuesta set "+votacion.getTipo()+" = ? where Pregunta_id = "+votacion.getPregunta();
 
-			Integer remitente = updateVotacion(votacion,query,update);
-			System.out.print(remitente);
+			updateVotacion(votacion,query,update);
+			Integer remitente = getWhoIdByPreguntaId(votacion.getPregunta(),"UserAnws");
+
 			updateVotosUsuario(votacion,remitente);
 			
 			query ="INSERT INTO Usuario_Vota_Respuesta VALUES ("+userID+","+votacion.getPregunta()+")";
@@ -451,6 +461,57 @@ public class SqlConnector {
 		}
 		return "It's ok";
 
+	}
+	public List<User> getUsersPopulares(){
+		String query = "SELECT UserAnws, count(id) as cont " + 
+				"FROM Pregunta " + 
+				"group by UserAnws " + 
+				"ORDER BY cont " + 
+				"DESC limit 10";
+		List<User> usuarios = new ArrayList<>();
+		
+		try {
+			PreparedStatement p = this.conn.prepareStatement(query);
+			//adsjipsdfjopsdjopsdfjopsdf
+			ResultSet rs = p.executeQuery();
+			
+			while(rs.next()) {
+				User usuario = getAllUserDataById(rs.getInt("UserAnws"));
+				usuarios.add(usuario);
+			}
+			
+		} catch (SQLException e) {
+			// Error en populares
+			System.out.println("Error recopilando los usuarios mas populares... "+e.getMessage());
+		}
+		
+		return usuarios;
+		
+	}
+	private User getAllUserDataById(int idUser) {
+		String query = "Select * from User where id = ?";
+		User usuario = new User();		
+		try {
+			
+		PreparedStatement p = this.conn.prepareStatement(query);
+		p.setInt(1,idUser);
+		
+		ResultSet rs = p.executeQuery();
+		rs.next();
+		
+		usuario.setUsername(rs.getString("Username"));
+		usuario.setPicture(rs.getString("Picture"));
+		usuario.setLikes(rs.getInt("Likes"));
+		usuario.setDislikes(rs.getInt("Dislikes"));
+		usuario.setUsefull(rs.getInt("Usefull"));
+		usuario.setId(rs.getInt("Id"));
+		usuario.setBanner(rs.getString("Banner"));
+		} catch (SQLException e) {
+			// Error reCojiendo usuarios
+			System.out.println("Error devolviendo un objeto usuario "+e.getMessage());
+		}
+		
+		return 	usuario;
 	}
 	private void updateVotosUsuario(Voto votacion, Integer remitente) {
 
@@ -477,11 +538,10 @@ public class SqlConnector {
 		}
 		
 	}
-	private Integer updateVotacion(Voto votacion, String query,String update) {
+	private void updateVotacion(Voto votacion, String query,String update) {
 		
 		int puntuacionDeVotacion = 0;
 		//Seleciona la cantidad de likes/usefull/Dislikes de la pregunta especificada
-		Integer remitente = 0;
 		PreparedStatement p;
 		try {
 			p = this.conn.prepareStatement(query);
@@ -497,32 +557,33 @@ public class SqlConnector {
 			p.setInt(1,puntuacionDeVotacion);
 			p.executeUpdate();
 			//Devuelve el remitente de la pregunta			
-			remitente = getIdUserAnwsByPregunta(votacion.getPregunta());
 			
 		} catch (SQLException e) {
 			// Error haciendo
 			System.out.print("Error haciendo un update de votacion en updatevotacion, "+e.getMessage());
 		}
-		return remitente;
 		
 	}
-	private int getIdUserPregByPregunta(int idPregunta) throws SQLException {
-		String query = "select UserPreg from Pregunta where id = "+idPregunta;
+	//Devuelve quien es por el id de la pregunta
+	private int getWhoIdByPreguntaId(int idPregunta,String whoUpvote) {
+		String query = "select "+whoUpvote+" from Pregunta where id = "+idPregunta;
+		try {
 		PreparedStatement p = this.conn.prepareStatement(query);
 		ResultSet rs = p.executeQuery();
 		rs.next();
-		return rs.getInt("UserPreg");
+		
+		return rs.getInt(whoUpvote);
+		} catch (SQLException e) {
+			// Error recojiendo el id
+			System.out.print("Error recojiendo un id a través de la pregunta, "+e.getMessage());
+			return 0;
+		}
 	}
-	private int getIdUserAnwsByPregunta(int idPregunta) throws SQLException {
-		String query = "select UserAnws from Pregunta where id = "+idPregunta;
-		PreparedStatement p = this.conn.prepareStatement(query);
-		ResultSet rs = p.executeQuery();
-		rs.next();
-		return rs.getInt("UserAnws");
-	}
-	private int getUserIdByUsername(String Username) throws SQLException {
+	//Devuelve el usuario por su nombre
+	private int getUserIdByUsername(String Username) {
 
 		String query = "select Id from User where Username = ? ";
+		try {
 		PreparedStatement p = this.conn.prepareStatement(query);
 
 		p.setString(1, Username);
@@ -530,6 +591,29 @@ public class SqlConnector {
 		ResultSet rs = p.executeQuery();
 		rs.next();
 		return rs.getInt("Id");
+		} catch (SQLException e) {
+			// Error recojiendo el id del usuario a traves de su nombre
+			System.out.print("Error devolviendo el id del usuario a traves de su nombre, "+e.getMessage());
+			return 0;
+		}
+	}
+	private Boolean setToken(String Username, String createToken) {
+		
+		if(!tokenAndUsers.containsKey(Username)) {
+			this.tokenAndUsers.put(Username, createToken);
+			return true;
+		}
+		else {	
+			return false;
+		}
+	}
+	private String getToken(String username) {
+		// Devolverá token
+		return this.tokenAndUsers.get(username) ;
+	}
+	private String createToken() {
+		String token = UUID.randomUUID().toString();
+		return token;
 	}
 
 }

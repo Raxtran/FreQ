@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+
 import static spark.Spark.*;
 
 public class App {
@@ -62,6 +64,11 @@ public class App {
 			List<User> usuarios = sql.getUsersCategoria(request.params(":id"));
 			return usuarios;
 		}, new JsonTransform());
+		get("/Populares", (request, response) -> {
+
+			List<User> usuarios = sql.getUsersPopulares();
+			return usuarios;
+		}, new JsonTransform());
 
 		get("/Categorias/Usuario/:id", (request, response) -> {
 
@@ -92,11 +99,27 @@ public class App {
 			return sql.insertPregunta(datosPregunta);
 		}, new JsonTransform());
 
-		get("/Login/:id", (request, response) -> {
-			String pswd = sql.isUserOk(request.params(":id"));
-			return pswd;
+		post("/Login", (request, response) -> {
+			try {
+			User usuario = mapper.readValue(request.body(), User.class);
+			String token = sql.login(usuario);
+
+			return token;
+			}
+			catch(UnrecognizedPropertyException e ) {
+				System.out.print("Error parsing usuario.... algun campo no esta donde toca, concretamente "+e.getMessage());
+				return "Error";
+				
+			}
 		}, new JsonTransform());
-		
+		post("/Logout", (request,response) ->{
+			
+			User usuario = mapper.readValue(request.body(), User.class);
+			
+			Boolean logOutStatus = sql.logout(usuario);
+			
+			return logOutStatus;
+		});
 		put("/updateVotacionP", (request, response) -> {
 		
 			Voto votacion = mapper.readValue(request.body(), Voto.class);

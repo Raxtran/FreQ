@@ -11,7 +11,7 @@ public  class User {
 	private int Likes;
 	private int Usefull; 
 	private int Dislikes;
-	
+	private String token;
 	
 	public int getId() {
 		return id;
@@ -71,6 +71,12 @@ public  class User {
 	public  String toString() {
 		return "User [Username=" + Username + ", Likes=" + Likes + ", Usefull=" + Usefull + ", Dislikes=" + Dislikes
 				+ "]";
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	
