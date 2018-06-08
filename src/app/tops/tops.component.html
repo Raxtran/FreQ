@@ -15,7 +15,7 @@
     <div class="Boxes" *ngIf="activaTop">
       <div class="Perfil" *ngFor="let usuario of Usuarios ; let i = index ">
 
-        <a href="http://localhost:4200/User/{{usuario.Username}}" class="button">
+        <a routerLink="/User/{{usuario.Username}}" class="button">
           <div class="tagcontent" [ngStyle]="{'background-image': 'url('+usuario.Banner+')', 'background-size': 'cover' } ">
 
 
@@ -55,7 +55,7 @@
       
 
             <div class="preguntado">   
-                <h5><a href="http://localhost:4200/User/{{comentario.UserAnws}}">{{comentario.UserAnws}} </a>  <i> responde</i> </h5> 
+                <h5><a routerLink="/User/{{comentario.UserAnws}}">{{comentario.UserAnws}} </a>  <i> responde</i> </h5> 
               </div>
               
             <div class="Preguntas-text">
@@ -87,8 +87,8 @@
                 </button>
               </div>
               <div class="Autor">
-                ~ <a href="http://localhost:4200/User/{{comentario.UserPreg}}">{{comentario.UserPreg}} </a> 
-                sobre <a href="http://localhost:4200/Categorias/{{comentario.Categoria}}" >{{comentario.Categoria}} </a>
+                ~ <a routerLink="/User/{{comentario.UserPreg}}">{{comentario.UserPreg}} </a> 
+                sobre <a routerLink="/Categorias/{{comentario.Categoria}}" >{{comentario.Categoria}} </a>
               </div>
             </div>
           </div>

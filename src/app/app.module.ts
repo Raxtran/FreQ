@@ -14,6 +14,7 @@ import { UsersCategoriaComponent } from './users-categoria/users-categoria.compo
 import { FormsModule } from '@angular/forms';
 import { StartPageComponent } from './start-page/start-page.component';
 import { PoliticaDePrivacidadComponent } from './politica-de-privacidad/politica-de-privacidad.component';
+import { PopularesComponent } from './populares/populares.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PoliticaDePrivacidadComponent } from './politica-de-privacidad/politica
     TopsComponent,
     UsersCategoriaComponent,
     StartPageComponent,
-    PoliticaDePrivacidadComponent
+    PoliticaDePrivacidadComponent,
+    PopularesComponent
   ],
   imports: [
     BrowserModule,

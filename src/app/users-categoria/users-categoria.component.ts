@@ -22,10 +22,6 @@ export class UsersCategoriaComponent implements OnInit {
       Id = params['id'];
     });
     this.getUser(Id);
-    console.log(this.Usuarios);
-
-
-
   }
   getUser(Id) {
     this.httpc.getUsersQueDominanLaCategoria(Id).subscribe(res => {

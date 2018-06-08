@@ -6,7 +6,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </a>
-      <a class="brand" href="http://127.0.0.1:4200/">
+      <a class="brand" routerLink="/">
         <img src="../../assets/Img/Logo3.png" id="Logo" alt="Notif...ah no, pará FreQ">
       </a>
       <ul class="nav nav-collapse">
@@ -15,27 +15,27 @@
             Categorias</a>
         </li>
         <li>
-          <a href="http://127.0.0.1:4200/Categorias/Populares" class="intrabar">
+          <a routerLink="/Categorias/Populares" class="intrabar">
             Populares</a>
         </li>
 
         <li>
-          <a href="http://127.0.0.1:4200/Tops/Likes" class="intrabar">
+          <a routerLink="/Tops/Likes" class="intrabar">
             Divertidos</a>
         </li>
 
         <li>
-          <a href="http://127.0.0.1:4200/Tops/Usefull" class="intrabar">
+          <a routerLink="/Tops/Usefull" class="intrabar">
             Interesantes</a>
         </li>
         <li>
-          <a href="http://127.0.0.1:4200/Tops/Dislikes" class="intrabar">
+          <a routerLink="/Tops/Dislikes" class="intrabar">
             Desacuerdo</a>
         </li>
       </ul>
       <!-- Si hay usuario activo !-->
       <div class="nav-user" *ngIf="usuario_activo != undefined">
-        <a href="http://127.0.0.1:4200/User/{{usuario_activo}}" class="user">{{usuario_activo}}</a>
+        <a routerLink="/User/{{usuario_activo}}" class="user">{{usuario_activo}}</a>
         <p>
           <a onclick="Salir">
             <i class="cerrarSesion" (click)="exitUsuario()">Cerrar sesión </i>

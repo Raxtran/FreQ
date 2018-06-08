@@ -1,5 +1,5 @@
 <div class="content" *ngIf="exists">
-  <div id="left" >
+  <div id="left">
 
     <div class="pfp">
       <img src="{{Usuario.Picture}}" alt="perfil" width="250">
@@ -35,7 +35,7 @@
 
     </div>
   </div>
-<!-- Formulario -->
+  <!-- Formulario -->
   <div class="Center">
 
     <div class="Center-top">
@@ -45,17 +45,17 @@
             <input class="radio" type="radio" name="Categoria" value="{{Categoria.nombre}}">
             <a class="nombreClases">{{Categoria.nombre}} </a>
           </div>
-          <select class="select" [(ngModel)]='esanon' (ngModelChange)="whotext()" name="User" >
-            <option value="1">Anónimo</option> 
-            <option class="esteUsuario" *ngIf="usuario_activo != undefined" value="2">{{usuario_activo}}</option>  
-         </select>
-         
+          <select class="select" [(ngModel)]='esanon' (ngModelChange)="whotext()" name="User">
+            <option value="1">Anónimo</option>
+            <option class="esteUsuario" *ngIf="usuario_activo != undefined" value="2">{{usuario_activo}}</option>
+          </select>
+
         </form>
       </div>
 
       <button type="submit" class="Enviar" (click)="postComent()"> Enviar</button>
       <div class="text">
-        <textarea class="inputtext" name="Texto"  placeholder="¿Qué vas a preguntar hoy?"></textarea>
+        <textarea class="inputtext" name="Texto" placeholder="¿Qué vas a preguntar hoy?"></textarea>
       </div>
     </div>
     <div class="Chooses">
@@ -65,65 +65,67 @@
         </button>
       </div>
       <div>
-        <button class="CRoSR" (click)="getPreguntas()" >{{hayRespuestas}}</button>
+        <button class="CRoSR" (click)="selectPreguntas()">{{hayRespuestas}}</button>
       </div>
     </div>
-    <div class="Center-bottom" *ngFor="let pregunta of Preguntas">
+    <div class="Center-bottom-master">
+      <div class="Center-bottom" *ngFor="let pregunta of Preguntas">
 
-      <!-- Recolect de todas las preguntas-->
-      <div class="Preguntas">
-        <div class="Preguntas-text">
-          {{pregunta.Texto}}
-        </div>
-
-        <div class="subtagEmotes pregunta-emotes-box">
-          <div>
-            <button class="buttonemote">
-
-              <a class="emoText pregunta-emotes">{{pregunta.Likes}}
-                <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
-              </a>
-            </button>
-            <button class="buttonemote">
-
-              <a class="emoText pregunta-emotes">{{pregunta.Usefull}}
-                <img class="emote pregunta-emote" src="../../assets/Img/Usefull.png">
-              </a>
-            </button>
-            <button class="buttonemote">
-
-              <a class="emoText pregunta-emotes">{{pregunta.Dislikes}}
-                <img class="emote pregunta-emote" src="../../assets/Img/Dislike.png">
-              </a>
-            </button>
+        <!-- Recolect de todas las preguntas-->
+        <div class="Preguntas">
+          <div class="Preguntas-text">
+            {{pregunta.Texto}}
           </div>
-          <div class="Autor">
-            ~ {{pregunta.UserPreg}} sobre {{pregunta.Categoria}}
+
+          <div class="subtagEmotes pregunta-emotes-box">
+            <div>
+              <button class="buttonemote" (click)="updateVotacionPregunta('Likes',pregunta.id)" >
+
+                <a class="emoText pregunta-emotes">{{pregunta.Likes}}
+                  <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
+                </a>
+              </button>
+              <button class="buttonemote" (click)="updateVotacionPregunta('Usefull', pregunta.id)">
+
+                <a class="emoText pregunta-emotes">{{pregunta.Usefull}}
+                  <img class="emote pregunta-emote" src="../../assets/Img/Usefull.png">
+                </a>
+              </button>
+              <button class="buttonemote" (click)="updateVotacionPregunta('Dislikes', pregunta.id)"> 
+
+                <a class="emoText pregunta-emotes">{{pregunta.Dislikes}}
+                  <img class="emote pregunta-emote" src="../../assets/Img/Dislike.png">
+                </a>
+              </button>
+            </div>
+            <div class="Autor">
+              ~ {{pregunta.UserPreg}} sobre {{pregunta.Categoria}}
+            </div>
           </div>
         </div>
-      </div>
-      <div class="Respuesta" *ngIf="hayRespuestas != 'Con respuesta'">
-        <div class="Preguntas-text">
-          {{pregunta.rText}}
-        </div>
+        <div class="Respuesta" *ngIf="hayRespuestas != 'Con respuesta'">
+          <div class="Preguntas-text">
+            {{pregunta.rText}}
+          </div>
 
-        <div class="subtagEmotes " >
-          <div>
-            <button class="buttonemote">
-              <a class="emoText pregunta-emotes">{{pregunta.rLikes}}
-                <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
-              </a>
-            </button>
-            <button class="buttonemote">
-              <a class="emoText pregunta-emotes">{{pregunta.rUseful}}
-                <img class="emote pregunta-emote" src="../../assets/Img/Usefull.png">
-              </a>
-            </button>
-            <button class="buttonemote">
-              <a class="emoText pregunta-emotes">{{pregunta.rDislikes}}
-                <img class="emote pregunta-emote" src="../../assets/Img/Dislike.png">
-              </a>
-            </button>
+          <div class="subtagEmotes ">
+            <div>
+              <button class="buttonemote" (click)="updateVotacionRespuesta('Likes', pregunta.id)" >
+                <a class="emoText pregunta-emotes" >{{pregunta.rLikes}}
+                  <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
+                </a>
+              </button>
+              <button class="buttonemote" (click)="updateVotacionRespuesta('Usefull', pregunta.id)">
+                <a class="emoText pregunta-emotes">{{pregunta.rUseful}}
+                  <img class="emote pregunta-emote" src="../../assets/Img/Usefull.png">
+                </a>
+              </button>
+              <button class="buttonemote" (click)="updateVotacionRespuesta('Dislikes', pregunta.id)">
+                <a class="emoText pregunta-emotes">{{pregunta.rDislikes}}
+                  <img class="emote pregunta-emote" src="../../assets/Img/Dislike.png">
+                </a>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -131,7 +133,8 @@
     <!-- Si no hay preguntas!-->
     <div *ngIf="Preguntas == 0">
       <div class="Center-bottom no-texts">
-        <h1>{{Usuario.Username}} aun no tiene preguntas...</h1> <h1>(ᴗ  ͟ʖᴗ) </h1>
+        <h1>{{Usuario.Username}} aun no tiene preguntas...</h1>
+        <h1>(ᴗ ͟ʖᴗ) </h1>
       </div>
     </div>
   </div>

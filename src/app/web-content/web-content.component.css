@@ -170,6 +170,12 @@ a{
     padding-left: 2px;
     align-items: flex-end;
     flex-direction: column;
+    
+}
+.Center-bottom-master{
+    max-height: 400px !important;
+    overflow-y: auto;
+
 }
 .Preguntas{
     background-color: #FFFFFF;
@@ -266,4 +272,8 @@ a{
     height: 20px;
     margin-top:0px;
     padding: 0;
+}
+h1{
+    text-justify: center;
+    min-width: 160px;
 }

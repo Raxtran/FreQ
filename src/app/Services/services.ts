@@ -5,8 +5,6 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class Requestes {
 
-    public usuario_activo;
-
 
     constructor(
         private httpclient: HttpClient
@@ -50,39 +48,62 @@ export class Requestes {
         return this.httpclient.get("http://localhost:4567/TopPreguntas/" + Id);
     }
     //Permite escribir un comentario
-    postComentario(Remitente, Categoria, Texto, Destinatario) {
-
-        let httpParams = new HttpParams();
-          httpParams = httpParams.set("Remitente", Remitente);
-          httpParams = httpParams.set("Categoria", Categoria);
-          httpParams = httpParams.set("Texto", Texto);
-          httpParams = httpParams.set("Destinatario", Destinatario);
-  
-          return this.httpclient.post("http://localhost:4567/users/post",httpParams) 
+    postComentario(Remitente, Categoria, Texto, Destinatario, Token) {
+        let params = { userPreg : Remitente, categoria: Categoria, texto:Texto, userAnws: Destinatario, token:Token  };
+        
+        return this.httpclient.post("http://localhost:4567/users/post",params) 
     }
-    //Devuelve el nombre de usuario conectado actualmente
-    getUsuarioConectado() {
-        return this.usuario_activo;
-    }
-    //Define el usuario que esta conectado actualmente
-    setUsuarioConectado(Usuario) {
-
-        return this.httpclient.get("http://localhost:4567/Login/" + Usuario)
-
-    }
-    //Sale de la sesión actual
-    exitUsuarioConectado() {
-        this.usuario_activo = undefined;
-
-    }
-    setUserActivo(User) {
-        this.usuario_activo = User;
-        localStorage.setItem("usuario_activo", User);
-    }
+    //Define el usuario conectado
     setUsuarioQuePregunta(User){
         localStorage.setItem("usuario_que_pregunta", User);
     }
+    //Devuelve el nombre de usuario conectado actualmente
+    getUsuarioConectado() {
+        return  localStorage.getItem("usuario_activo");
+    }
+    //Devuelve el token del usuario que esta tratando de conectarse actualmente si esta todo correcto
+    login(Usuario,pass) {
+        let params = {username: Usuario, contraseña:  pass}
+        return this.httpclient.post("http://localhost:4567/Login", params)
+    }
+    //Borra el token del usuario
+    logout(Usuario, token){
+        let params = {username : Usuario, token : token}
+        return this.httpclient.post("http://localhost:4567/Logout", params)
+    }
+    //Sale de la sesión actual
+    exitUsuarioConectado() {
+        localStorage.removeItem("usuario_activo")
+        
+    }
+    setUsuarioConectado(User) {
+        localStorage.setItem("usuario_activo", User);
+    }
+
+    setToken(token){
+        localStorage.setItem("token", token);
+    }
+    getToken(){
+        return localStorage.getItem("token");
+    }
+    delToken(){
+        localStorage.removeItem("token");
+    }
+   
     getUsuarioQuePregunta(){
         return localStorage.getItem("usuario_que_pregunta")    
+    }
+    updateVotacionP(User,Tipo,Pregunta){
+        let params = { usuario : User, pregunta: Pregunta, tipo: Tipo  };
+
+        return this.httpclient.put("http://localhost:4567/updateVotacionP", params)
+    }
+    updateVotacionR(User,Tipo,Pregunta){
+        let params = { usuario : User, pregunta: Pregunta, tipo: Tipo  };
+
+        return this.httpclient.put("http://localhost:4567/updateVotacionR", params)
+    }
+    getUsersPopu(){
+        return this.httpclient.get("http://localhost:4567/Populares")
     }
 }

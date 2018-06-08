@@ -32,10 +32,6 @@
     width: 100%;
     height: 100%;
 }
-.subtop:hover{
-    color: rgba(216, 241, 252, 0.726) !important;
- 
-}
 .Perfil{
     background-color: #FCA385;
     margin-bottom: 25px;
@@ -47,9 +43,6 @@
 .com-user{
     text-decoration: none;
     width: 100%;
-}
-.com-user:hover{
-    background-color:rgb(202, 125, 2) !important ;
 }
 .tagcontent{
     display: flex;
@@ -78,8 +71,7 @@ a{
 }
 .emote{
     width: 25px;
-    height: 25px;
-    
+    height: 25px;  
 }
 .emoText{
     font-size: 20px;
@@ -89,48 +81,4 @@ a{
 .Categorias{
     width: 100%;
     
-}
-
-
-.Preguntas{
-    background-color: #FFFFFF;
-    border-radius: 10px;
-    width: 100%;
-    margin:15px 30px 15px 15px ;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-}
-.Preguntas-text{
-    color: black;
-    font-weight: bold;
-    margin: 8px 0px 15px 14px;
-    width: 100%;
-}
-
-.subtagEmotes{
-    display: flex;
-    flex-direction: row;
-    margin-left: 23px;
-    margin-bottom: 05px !important ;
-}
-
-.pregunta-emotes-box{ 
-    justify-content: space-between !important ;
-}
-
-.buttonemote{
-    background-color: transparent;
-    border:none;   
-}
-
-.Autor{
-    font-style: italic;
-    font-weight: normal;
-    color: black;
-    margin-right: 15px;
-}
-.preguntado{
-    color: black;
-    margin: 5px 0px 0px 10px;
 }

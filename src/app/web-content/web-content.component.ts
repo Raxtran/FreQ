@@ -3,7 +3,6 @@ import { Requestes } from '../Services/services';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import * as $ from 'jquery';
 
-
 @Component({
   selector: 'web-content',
   templateUrl: './web-content.component.html',
@@ -32,8 +31,6 @@ export class WebContentComponent implements OnInit {
     });
 
     this.getUser(Id);
-
-
   }
   getUser(Id) {
 
@@ -44,61 +41,66 @@ export class WebContentComponent implements OnInit {
         //Get categorias dominadas
         this.httpc.getCategoriaDominante(this.Usuario.id).subscribe(res => {
           this.Categorias = res;
-
         });
         //Get preguntas hacia él
-
         this.getPreguntas();
       }
     });
-  }  
+  }
   whotext() {
-
 
     if (this.esanon == 1) {
       this.httpc.setUsuarioQuePregunta("Anon");
+    }
+    else {
+      this.httpc.setUsuarioQuePregunta(localStorage.getItem("usuario_activo"));
+    }
+  }
+  //Cambia los colores y el texto al hacer clic en con respuesta o en sin respeusta
+  selectPreguntas() {
+    if (this.hayRespuestas == "Sin respuesta") {
+      $(".CRoSR").css("background-color", "rgb(106, 199, 63)");
+      this.hayRespuestas = "Con respuesta";
 
     }
     else {
-      this.httpc.setUsuarioQuePregunta(localStorage.getItem("usuario_activo"));      
+      $(".CRoSR").css("background-color", "rgb(253, 143, 70)");
+      this.hayRespuestas = "Sin respuesta";
+
     }
+    this.getPreguntas();
   }
-getPreguntas() {
+  //recibe preguntas...
+  getPreguntas() {
 
-    if (this.hayRespuestas == "Sin respuesta") {
+    if (this.hayRespuestas == "Con respuesta") {
       this.httpc.getPreguntasDeUsuarioSR(this.Usuario.id).subscribe(res => {
-
         this.Preguntas = res;
-        this.hayRespuestas = "Con respuesta";
-
       });
-      $(".CRoSR").css("background-color", "rgb(106, 199, 63)")
+
+    }
+    else if (this.hayRespuestas == "Sin respuesta") {
+      this.httpc.getPreguntasDeUsuarioCR(this.Usuario.id).subscribe(res => {
+        this.Preguntas = res;
+      });
     }
     else {
       this.httpc.getPreguntasDeUsuarioCR(this.Usuario.id).subscribe(res => {
         this.Preguntas = res;
+        $(".CRoSR").css("background-color", "rgb(253, 143, 70)");
         this.hayRespuestas = "Sin respuesta";
-
       });
-      $(".CRoSR").css("background-color", "rgb(253, 143, 70)")
-
     }
   }
   postComent(Remitente, Destinatario) {
-    var error;
 
+    var error;
     var categoria = $(".radio:checked").val();
     var text = $(".inputtext").val();
     this.usuario_activo = localStorage.getItem("usuario_activo");
 
-
-
-
     if (categoria == undefined) {
       error = "Selecciona categoria";
-
-      alert(error);
-
     } else if (text == "") {
       error = "Escribe algo!";
     } else if (this.esanon == "") {
@@ -106,18 +108,29 @@ getPreguntas() {
     }
     else {
 
-       this.httpc.postComentario(this.httpc.getUsuarioQuePregunta(), categoria, text, this.Usuario.Username).subscribe(res => {
-         this.preguntaStatus = res;
- 
-       });
+      this.httpc.postComentario(this.httpc.getUsuarioQuePregunta(), categoria, text, this.Usuario.Username, this.httpc.getToken()).subscribe(res => {
+        this.preguntaStatus = res;
+        this.getPreguntas();
+
+      });
     }
     if (error != undefined) {
       alert(error);
     }
 
+  }
+  updateVotacionPregunta(Tipo, preguntaId){
 
+    this.httpc.updateVotacionP(this.httpc.getUsuarioConectado(),Tipo,preguntaId ).subscribe(res => {
+      this.getPreguntas();
+    });
 
   }
+  updateVotacionRespuesta(Tipo, preguntaId){
 
+    this.httpc.updateVotacionR(this.httpc.getUsuarioConectado(),Tipo,preguntaId ).subscribe(res => {
+      this.getPreguntas();
+    });
 
+  }
 }

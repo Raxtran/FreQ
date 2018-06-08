@@ -15,19 +15,20 @@ export class TopsComponent implements OnInit {
   private Categorias = [];
   private activaTop: Boolean = true;
   private Comentarios;
-
+  private usuario_activo;
   constructor(private httpc: Requestes, private activatedRoute: ActivatedRoute) { }
 
-  ngOnInit() {
-    this.initializerTops();
-  }
-
-  initializerTops() {
+  ngOnInit() {  
     let Id;
     this.activatedRoute.params.subscribe((params: Params) => {
       Id = params['id'];
+      this.initializerTops(Id);
     });
 
+  }
+
+  initializerTops(Id) {
+  
     if (this.activaTop) {
       this.getTop(Id);
     } else {
@@ -47,15 +48,13 @@ export class TopsComponent implements OnInit {
       $("#Comentarios").css("background-color", "#EB9100");
       $("#Usuarios").css("background-color", "#008db1");
     }
-    this.initializerTops();
+    this.ngOnInit();
   }
   getTop(Id) {
     $("#Usuarios").css("background-color", "#EB9100");
 
-
     this.httpc.getTop(Id).subscribe(res => {
       this.Usuarios = res;
-
       this.getDomCategorias(this.Usuarios);
 
     });
