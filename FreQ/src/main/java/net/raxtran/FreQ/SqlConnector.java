@@ -2,9 +2,7 @@ package net.raxtran.FreQ;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class SqlConnector {
@@ -13,10 +11,13 @@ public class SqlConnector {
 	private String Bdd = "jdbc:mysql://hl20.dinaserver.com/freq";
 	private String BddUser = "raxtran";
 	private String BddPwd = "pth34cc93";
-	private Map<String,String> tokenAndUsers = new HashMap<String,String>();
 	
-	public SqlConnector() throws SQLException {
+	public SqlConnector() {
+		try {
 		conn = DriverManager.getConnection(Bdd, BddUser, BddPwd);
+		}catch(SQLException e) {
+			System.out.println("Error conectandose a la base de datos -> "+e.getMessage());
+		}
 	}
 
 	public User getUser(String Id)  {
@@ -287,58 +288,63 @@ public class SqlConnector {
 	}
 
 	public String insertPregunta(Pregunta datosPregunta)  {
-		// REMITENTE - CATEGORIA- TEXTO - DESTINATARIO
+		// REMITENTE - CATEGORIA- TEXTO - DESTINATARIO - Token
 
 		int IdCategoria = 0;
 		int remitente = -1;
 		int destinatario = 0;
-		
 		String query = "Select Id from Categoria where nombre = ?";
 		PreparedStatement p;
-		try {
-			// Id de categoria a traves del nombre de la categoria
-			p = this.conn.prepareStatement(query);
-			p.setString(1, datosPregunta.getCategoria());
-			ResultSet rs = p.executeQuery();
-			rs.next();
-			IdCategoria = rs.getInt("Id");
-		}catch(SQLException e) {		
-			// Intentan poner una categoria de un comentario de manera ilícita
-			System.out.println("Intentan poner una categoria que el usuario no domina de manera deshonesta ("+e.getMessage()+") ");	
-			
-		}
-		// Si el usuario remitente que llega no es Anon, busca su id
-		if (!datosPregunta.getUserPreg().equals("Anon")) {
-			remitente = getUserIdByUsername(datosPregunta.getUserPreg());
-		}
-
-		destinatario = getUserIdByUsername(datosPregunta.getUserAnws());
-		
-		try {
-			// Insertar los datos en pregunta
-			query = "Insert into Pregunta(UserPreg,Categoria,Texto,UserAnws) " + "Values(?,?,?,?)";
-			p = this.conn.prepareStatement(query);
-			// Si el remitente es -1 (No a buscado el id), pone en null el id usuario quepregunta
-			if (remitente == -1) {
-				p.setNull(1, java.sql.Types.INTEGER);
-			} else {
-				p.setInt(1, remitente);
-	
+				
+		if(datosPregunta.getToken().equals(getToken(datosPregunta.getUserPreg())) || datosPregunta.getUserPreg().equals("Anon") ) {
+			try {
+				// Id de categoria a traves del nombre de la categoria
+				p = this.conn.prepareStatement(query);
+				p.setString(1, datosPregunta.getCategoria());
+				ResultSet rs = p.executeQuery();
+				rs.next();
+				IdCategoria = rs.getInt("Id");
+			}catch(SQLException e) {		
+				// Intentan poner una categoria de un comentario de manera ilícita
+				System.out.println("Intentan poner una categoria que el usuario no domina de manera deshonesta ("+e.getMessage()+") ");	
+				
 			}
-			// Id de la categoria
-			p.setInt(2, IdCategoria);
-			// Texto
-			p.setString(3, datosPregunta.getTexto());
-			// Destinatario
-			p.setInt(4, destinatario);
-			p.executeUpdate();
-
-		}catch(SQLException e) {
-			// Error insertando la pregunta
-			System.out.println("Error insertando una pregunta con el mensaje ("+e.getMessage()+"), vigila a tus usuarios");
+			// Si el usuario remitente que llega no es Anon, busca su id
+			if (!datosPregunta.getUserPreg().equals("Anon")) {
+				remitente = getUserIdByUsername(datosPregunta.getUserPreg());
+			}
+	
+			destinatario = getUserIdByUsername(datosPregunta.getUserAnws());
+			
+			try {
+				// Insertar los datos en pregunta
+				query = "Insert into Pregunta(UserPreg,Categoria,Texto,UserAnws) " + "Values(?,?,?,?)";
+				p = this.conn.prepareStatement(query);
+				// Si el remitente es -1 (No a buscado el id), pone en null el id usuario quepregunta
+				if (remitente == -1) {
+					p.setNull(1, java.sql.Types.INTEGER);
+				} else {
+					p.setInt(1, remitente);
+		
+				}
+				// Id de la categoria
+				p.setInt(2, IdCategoria);
+				// Texto
+				p.setString(3, datosPregunta.getTexto());
+				// Destinatario
+				p.setInt(4, destinatario);
+				p.executeUpdate();
+	
+			}catch(SQLException e) {
+				// Error insertando la pregunta
+				System.out.println("Error insertando una pregunta con el mensaje ("+e.getMessage()+"), vigila a tus usuarios");
+			}
 		}
-
-		return "Mensaje enviado con exito";
+		else {
+			System.out.print("Intentan postear una pregunta de manera extraña desde el usuario "+
+					datosPregunta.getUserPreg()+", el cual posee este token "+datosPregunta.getToken());
+		}
+		return "It's ok";
 
 	}
 
@@ -358,6 +364,7 @@ public class SqlConnector {
 				pswd = rs.getString("Contraseña");
 				//Si las contraseñas son iguales devuelve true
 				if(pswd.equals(usuario.getContraseña())) {
+					
 					authStatus = setToken(usuario.getUsername(),createToken());
 				}
 				//Si a podido insertar un token
@@ -377,10 +384,23 @@ public class SqlConnector {
 		String username = usuario.getUsername();
 		String token = usuario.getToken();
 		Boolean status = false;
+		String query = "Select * FROM Token where Username = ?";
 		
-		if(this.tokenAndUsers.get(username).equals(token)) {
-			this.tokenAndUsers.remove(username);
-			status = true;
+		try {
+			PreparedStatement p = this.conn.prepareStatement(query);
+			p.setString(1, username);
+
+			ResultSet rs = p.executeQuery();
+			
+			if(rs.next() && rs.getString("Token").equals(token)) {
+				status = true;
+			}
+			else {
+				status = false;
+			}
+			
+		}catch(SQLException e) {
+			System.out.println("El token o el usuario es "+e.getMessage() );
 		}
 		return status;
 	}
@@ -498,7 +518,7 @@ public class SqlConnector {
 		
 		ResultSet rs = p.executeQuery();
 		rs.next();
-		
+				
 		usuario.setUsername(rs.getString("Username"));
 		usuario.setPicture(rs.getString("Picture"));
 		usuario.setLikes(rs.getInt("Likes"));
@@ -599,17 +619,63 @@ public class SqlConnector {
 	}
 	private Boolean setToken(String Username, String createToken) {
 		
-		if(!tokenAndUsers.containsKey(Username)) {
-			this.tokenAndUsers.put(Username, createToken);
-			return true;
+		String query = "Select Token from Token where Username = ?";
+
+		String insert = "INSERT INTO Token(Username, Token) VALUES (?,?)";
+		
+		PreparedStatement p;
+		
+		try {
+
+			p = this.conn.prepareStatement(query);
+
+			p.setString(1,Username);
+
+			ResultSet rs = p.executeQuery();
+			//Si ya hay un token que devuelva true
+			if(rs.next()) {
+				return true;
+			}
+			//Si no tiene token que lo cree, y que devuelva true
+			else {
+				p = this.conn.prepareStatement(insert);
+	
+				p.setString(1,Username);
+				p.setString(2, createToken);
+				p.executeUpdate();
+				return true;
+		
+			}
+		
+		} catch (SQLException e) {
+			// Error insertando el token
+			System.out.println("Error insertando token... "+e.getMessage());
+			return null;
+
 		}
-		else {	
-			return false;
-		}
+		
 	}
 	private String getToken(String username) {
 		// Devolverá token
-		return this.tokenAndUsers.get(username) ;
+		String query = "Select Token from Token where Username = ?";
+		
+		PreparedStatement p;
+		String token = null;
+		try {
+			
+			p = this.conn.prepareStatement(query);
+			p.setString(1,username);
+			
+			ResultSet rs = p.executeQuery();
+
+			rs.next();
+			
+			token = rs.getString("Token");
+
+		}catch(SQLException e) {
+			System.out.println("Error recibiendo el token "+e.getMessage());
+		}
+		return token ;
 	}
 	private String createToken() {
 		String token = UUID.randomUUID().toString();

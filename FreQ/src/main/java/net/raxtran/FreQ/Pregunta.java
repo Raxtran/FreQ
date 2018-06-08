@@ -10,6 +10,7 @@ public class Pregunta {
 	private String Categoria;
 	private String UserPreg;
 	private String UserAnws;
+	private String token;
 	
 	public int getId() {
 		return id;
@@ -63,6 +64,12 @@ public class Pregunta {
 	public String toString() {
 		return "Pregunta [id=" + id + ", Texto=" + Texto + ", Likes=" + Likes + ", Usefull=" + Usefull + ", Dislikes="
 				+ Dislikes + ", Categoria=" + Categoria + ", UserPreg=" + UserPreg + ", UserAnws=" + UserAnws + "]";
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	
