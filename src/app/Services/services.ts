@@ -30,13 +30,13 @@ export class Requestes {
 
     }
     //Devuelve las preguntas del usuario SIN respuesta
-    getPreguntasDeUsuarioSR(Id) {
-        return this.httpclient.get("http://localhost:4567/Preguntas/SinRespuesta/" + Id);
+    getPreguntasDeUsuarioSR(Id,Type) {
+        return this.httpclient.get("http://localhost:4567/Preguntas/SinRespuesta/" + Id+"/"+Type);
 
     }
     //Devuelve las preguntas del usuario CON respuesta
-    getPreguntasDeUsuarioCR(Id) {
-        return this.httpclient.get("http://localhost:4567/Preguntas/ConRespuesta/" + Id);
+    getPreguntasDeUsuarioCR(Id,Type) {
+        return this.httpclient.get("http://localhost:4567/Preguntas/ConRespuesta/" + Id+"/"+Type);
 
     }
     //Devuelve los usuarios que dominan X categoria
@@ -47,11 +47,18 @@ export class Requestes {
     getTopComentarios(Id) {
         return this.httpclient.get("http://localhost:4567/TopPreguntas/" + Id);
     }
-    //Permite escribir un comentario
+    //Permite escribir una pregunta
     postComentario(Remitente, Categoria, Texto, Destinatario, Token) {
         let params = { userPreg : Remitente, categoria: Categoria, texto:Texto, userAnws: Destinatario, token:Token  };
         
         return this.httpclient.post("http://localhost:4567/users/post",params) 
+    }
+    //Permite responder una pregunta
+    postResponderComentario(Usuario, preguntaId, texto, token){
+        let params = { userAnws: Usuario, id: preguntaId, texto : texto, token: token };
+
+        return this.httpclient.post("http://localhost:4567/users/post/anwser", params);
+
     }
     //Define el usuario conectado
     setUsuarioQuePregunta(User){
@@ -94,8 +101,9 @@ export class Requestes {
         return localStorage.getItem("usuario_que_pregunta")    
     }
     updateVotacionP(User,Tipo,Pregunta){
+        
         let params = { usuario : User, pregunta: Pregunta, tipo: Tipo  };
-
+        alert(params.pregunta)
         return this.httpclient.put("http://localhost:4567/updateVotacionP", params)
     }
     updateVotacionR(User,Tipo,Pregunta){

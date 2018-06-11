@@ -26,14 +26,15 @@ import { PopularesComponent } from './populares/populares.component';
     UsersCategoriaComponent,
     StartPageComponent,
     PoliticaDePrivacidadComponent,
-    PopularesComponent
+    PopularesComponent,
+    
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     HttpModule,
     appRouting,
-    FormsModule,
+    FormsModule
   ],
   providers: [Requestes],
   bootstrap: [AppComponent]

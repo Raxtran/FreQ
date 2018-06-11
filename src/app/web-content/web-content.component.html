@@ -60,7 +60,7 @@
     </div>
     <div class="Chooses">
       <div *ngFor="let Categoria of Categorias">
-        <button class="Chooses-opciones">
+        <button class="Chooses-opciones" (click)="getPreguntas(Categoria.id)">
           {{Categoria.nombre}}
         </button>
       </div>
@@ -69,17 +69,15 @@
       </div>
     </div>
     <div class="Center-bottom-master">
-      <div class="Center-bottom" *ngFor="let pregunta of Preguntas">
-
+      <div class="Center-bottom" *ngFor="let pregunta of Preguntas;let i = index">
         <!-- Recolect de todas las preguntas-->
-        <div class="Preguntas">
+        <div class="Preguntas" id="pregunta_{{i}}" (click)="responderShowUp()">
           <div class="Preguntas-text">
             {{pregunta.Texto}}
           </div>
-
           <div class="subtagEmotes pregunta-emotes-box">
             <div>
-              <button class="buttonemote" (click)="updateVotacionPregunta('Likes',pregunta.id)" >
+              <button class="buttonemote" (click)="updateVotacionPregunta('Likes',pregunta.id)">
 
                 <a class="emoText pregunta-emotes">{{pregunta.Likes}}
                   <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
@@ -91,7 +89,7 @@
                   <img class="emote pregunta-emote" src="../../assets/Img/Usefull.png">
                 </a>
               </button>
-              <button class="buttonemote" (click)="updateVotacionPregunta('Dislikes', pregunta.id)"> 
+              <button class="buttonemote" (click)="updateVotacionPregunta('Dislikes', pregunta.id)">
 
                 <a class="emoText pregunta-emotes">{{pregunta.Dislikes}}
                   <img class="emote pregunta-emote" src="../../assets/Img/Dislike.png">
@@ -103,6 +101,13 @@
             </div>
           </div>
         </div>
+        <!--Responder preguntas-->
+        <div class="escribeRespuestaContainer" id="respuesta_{{i}}" *ngIf="hayRespuestas == 'Con respuesta' ">
+          <div class="escribeRespuesta">
+            <button type="submit" class="respuestaButton" (click)="postRespuesta(pregunta.id, i)"> Enviar</button>
+            <textarea class="respuestaText" id="{{i}}" name="respuestaTexto" placeholder="Pués la verdad...."></textarea>
+          </div>
+        </div>
         <div class="Respuesta" *ngIf="hayRespuestas != 'Con respuesta'">
           <div class="Preguntas-text">
             {{pregunta.rText}}
@@ -110,8 +115,8 @@
 
           <div class="subtagEmotes ">
             <div>
-              <button class="buttonemote" (click)="updateVotacionRespuesta('Likes', pregunta.id)" >
-                <a class="emoText pregunta-emotes" >{{pregunta.rLikes}}
+              <button class="buttonemote" (click)="updateVotacionRespuesta('Likes', pregunta.id)">
+                <a class="emoText pregunta-emotes">{{pregunta.rLikes}}
                   <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
                 </a>
               </button>

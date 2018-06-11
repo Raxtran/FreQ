@@ -134,3 +134,15 @@ a{
     color: black;
     margin: 5px 0px 0px 10px;
 }
+@media screen and (min-width: 1900px) {
+    .Boxes{
+        width: 85%;
+        background-color: #444444;
+        padding:25px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        max-height: 720px !important;
+    
+    }
+}
+  

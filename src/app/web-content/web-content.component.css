@@ -277,3 +277,49 @@ h1{
     text-justify: center;
     min-width: 160px;
 }
+textarea{
+    resize: none;
+}
+.escribeRespuestaContainer{
+    display: none;
+}
+.escribeRespuesta{
+    margin-top: -15px;
+    margin-right: 30px;
+    display:flex;
+    flex-direction: row-reverse;
+    width: 700px;
+    height: 55px;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    background-color: #aedd94;
+    border-radius: 10px;
+}
+.respuestaButton{
+    background-color: rgba(105, 190, 230, 0.932);
+    border: 1px solid rgb(71, 134, 163);
+    width: 10%;
+    height: 100%;
+    align-self: center;
+    border-radius: 1px 10px 10px 1px;  
+}
+.respuestaText{
+    border-top: 1px solid black;
+    height: 100%;
+    width: 90%;
+    color:black !important;
+    font-weight: bold !important;
+}
+.respuestaText:focus{
+    background-color: #aedd94;
+}
+.Preguntas:focus{
+    display: block;
+}
+@media screen and (min-width: 1900px) {
+    .Center-bottom-master{
+        max-height: 550px !important;
+        overflow-y: auto;
+    }
+}
+  

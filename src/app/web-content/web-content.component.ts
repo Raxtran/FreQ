@@ -20,17 +20,17 @@ export class WebContentComponent implements OnInit {
   private preguntaStatus;
   private usuario_activo;
   private esanon;
+  private Id;
 
   ngOnInit() {
 
     this.usuario_activo = localStorage.getItem("usuario_activo");
     this.esanon = "";
-    let Id;
     this.activatedRoute.params.subscribe((params: Params) => {
-      Id = params['id'];
+      this.Id = params['id'];
     });
 
-    this.getUser(Id);
+    this.getUser(this.Id);
   }
   getUser(Id) {
 
@@ -41,9 +41,10 @@ export class WebContentComponent implements OnInit {
         //Get categorias dominadas
         this.httpc.getCategoriaDominante(this.Usuario.id).subscribe(res => {
           this.Categorias = res;
+          console.log(this.Categorias)
         });
         //Get preguntas hacia él
-        this.getPreguntas();
+        this.getPreguntas(0);
       }
     });
   }
@@ -68,24 +69,24 @@ export class WebContentComponent implements OnInit {
       this.hayRespuestas = "Sin respuesta";
 
     }
-    this.getPreguntas();
+    this.getPreguntas(0);
   }
   //recibe preguntas...
-  getPreguntas() {
+  getPreguntas(Type) {
 
     if (this.hayRespuestas == "Con respuesta") {
-      this.httpc.getPreguntasDeUsuarioSR(this.Usuario.id).subscribe(res => {
+      this.httpc.getPreguntasDeUsuarioSR(this.Usuario.id,Type).subscribe(res => {
         this.Preguntas = res;
       });
 
     }
     else if (this.hayRespuestas == "Sin respuesta") {
-      this.httpc.getPreguntasDeUsuarioCR(this.Usuario.id).subscribe(res => {
+      this.httpc.getPreguntasDeUsuarioCR(this.Usuario.id,Type).subscribe(res => {
         this.Preguntas = res;
       });
     }
     else {
-      this.httpc.getPreguntasDeUsuarioCR(this.Usuario.id).subscribe(res => {
+      this.httpc.getPreguntasDeUsuarioCR(this.Usuario.id,Type).subscribe(res => {
         this.Preguntas = res;
         $(".CRoSR").css("background-color", "rgb(253, 143, 70)");
         this.hayRespuestas = "Sin respuesta";
@@ -110,7 +111,10 @@ export class WebContentComponent implements OnInit {
 
       this.httpc.postComentario(this.httpc.getUsuarioQuePregunta(), categoria, text, this.Usuario.Username, this.httpc.getToken()).subscribe(res => {
         this.preguntaStatus = res;
-        this.getPreguntas();
+        if(this.preguntaStatus){
+          this.getPreguntas(0);
+          $(".inputtext").val("");
+        }
 
       });
     }
@@ -119,18 +123,62 @@ export class WebContentComponent implements OnInit {
     }
 
   }
-  updateVotacionPregunta(Tipo, preguntaId){
+  updateVotacionPregunta(Tipo, preguntaId) {
 
-    this.httpc.updateVotacionP(this.httpc.getUsuarioConectado(),Tipo,preguntaId ).subscribe(res => {
-      this.getPreguntas();
+    this.httpc.updateVotacionP(this.httpc.getUsuarioConectado(), Tipo, preguntaId).subscribe(res => {
+    this.getPreguntas(0);
     });
 
   }
-  updateVotacionRespuesta(Tipo, preguntaId){
+  updateVotacionRespuesta(Tipo, preguntaId) {
 
-    this.httpc.updateVotacionR(this.httpc.getUsuarioConectado(),Tipo,preguntaId ).subscribe(res => {
-      this.getPreguntas();
+    this.httpc.updateVotacionR(this.httpc.getUsuarioConectado(), Tipo, preguntaId).subscribe(res => {
+      this.getPreguntas(0);
     });
+
+  }
+  //Para poder responder a una pregunta
+  responderShowUp() {
+          console.log(this.Id+" "+this.usuario_activo)
+
+    if(this.Id == this.usuario_activo){
+      //Hace que aparezca la respuesta
+      $('.escribeRespuestaContainer').fadeToggle('slow');
+      $(this).toggleClass('green');
+      $(document).mouseup(function (e) {
+        var container = $(".escribeRespuestaContainer");
+
+        if (!container.is(e.target) //Si ya no haces click en el contenedor...
+          && container.has(e.target).length === 0) // ... o dentro de el
+        {
+          container.fadeOut(500, function () { $(this).hide(); });
+          $('.Pregunta').removeClass('green');
+        }
+      });
+    
+  }
+  }
+  postRespuesta(preguntaId, I) {
+    var respuestaText = $('#' + I).val();
+
+    if (respuestaText != "") {
+
+
+      this.httpc.postResponderComentario(this.httpc.getUsuarioConectado(), preguntaId, respuestaText, this.httpc.getToken()).subscribe(res => {
+        var params = res;
+        if (params) {
+
+          $("#pregunta_" + I).fadeOut(500, function () { $(this).remove(); });
+          $("#respuesta_" + I).fadeOut(500, function () { $(this).remove(); });
+
+
+        }
+      });
+
+    } else {
+
+    }
+
 
   }
 }

@@ -32,7 +32,7 @@ export class AppNavbarComponent implements OnInit {
       if (!container.is(e.target) //Si ya no haces click en el contenedor...
         && container.has(e.target).length === 0) // ... o dentro de el
       {
-        container.hide();
+        container.fadeOut(500,function(){$(this).hide();});
         $('#loginform').removeClass('green');
       }
     });
