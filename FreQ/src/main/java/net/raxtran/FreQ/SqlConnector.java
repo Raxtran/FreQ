@@ -20,35 +20,14 @@ public class SqlConnector {
 		}
 	}
 
-	public User getUser(String Id)  {
-		String query = "SELECT * FROM User WHERE Username = ?";
+	public User getUser(String Username)  {
 		User usuario = new User();
-		try {
-		PreparedStatement p = this.conn.prepareStatement(query);
-
-		p.setString(1, Id);
-		ResultSet rs = p.executeQuery();
-
-		if (rs.next()) {
-
-			usuario.setUsername(rs.getString("Username"));
-			usuario.setPicture(rs.getString("Picture"));
-			usuario.setBio(rs.getString("Bio"));
-			usuario.setLikes(rs.getInt("Likes"));
-			usuario.setDislikes(rs.getInt("Dislikes"));
-			usuario.setUsefull(rs.getInt("Usefull"));
-			usuario.setId(rs.getInt("Id"));
-
-		}
-		}catch(SQLException e) {		
-			// Cuando intentan acceder a las preguntas de un usuario de manera ilícita
-			System.out.println("Intentan acceder a un usuario inexistente de manera deshonesta ("+e.getMessage()+") ");	
-			
-		}
+	
+		usuario = getAllUserDataById(getUserIdByUsername(Username));
+	
 		return usuario;
 
 	}
-
 	public List<Categoria> getCategorias() {
 
 		List<Categoria> categorias = new ArrayList<>();
@@ -73,7 +52,6 @@ public class SqlConnector {
 		return categorias;
 
 	}
-
 	public List<User> getTops(String id)  {
 
 		List<User> usuarios = new ArrayList<>();
@@ -88,13 +66,7 @@ public class SqlConnector {
 	
 				while (rs.next()) {
 					User usuario = new User();
-					usuario.setUsername(rs.getString("Username"));
-					usuario.setPicture(rs.getString("Picture"));
-					usuario.setLikes(rs.getInt("Likes"));
-					usuario.setDislikes(rs.getInt("Dislikes"));
-					usuario.setUsefull(rs.getInt("Usefull"));
-					usuario.setId(rs.getInt("Id"));
-					usuario.setBanner(rs.getString("Banner"));
+					usuario = getAllUserDataById(rs.getInt("Id"));
 	
 					usuarios.add(usuario);
 				}
@@ -107,8 +79,8 @@ public class SqlConnector {
 		}
 		return usuarios;
 	}
-
 	public List<Categoria> getCategoriaDominante(String Id) {
+
 
 		List<Categoria> Categorias = new ArrayList<>();
 		String query = 
@@ -136,9 +108,8 @@ public class SqlConnector {
 		return Categorias;
 
 	}
-
-	public List<Pregunta> getPreguntasSR(String Id) throws SQLException {
-
+	public List<Pregunta> getPreguntasSR(String userId,String type) {
+		
 		List<Pregunta> Preguntas = new ArrayList<>();
 		String query = 
 				"SELECT p.Id as Id, p.Likes, p.Dislikes, p.Usefull, p.Texto, c.Nombre, u.Username "
@@ -148,10 +119,27 @@ public class SqlConnector {
 				+ "left join Respuesta r on r.Pregunta_id = p.Id "
 				+ "WHERE p.UserAnws = ? AND r.Pregunta_id is Null "
 				+ "order by p.Id DESC ";
+		String queryConType = 
+				"SELECT p.Id as Id, p.Categoria, p.Likes, p.Dislikes, p.Usefull, p.Texto, c.Nombre, u.Username "
+				+ "FROM Pregunta p "
+				+ "inner join Categoria c on c.Id = p.Categoria "
+				+ "left join User u on u.Id = p.UserPreg "
+				+ "left join Respuesta r on r.Pregunta_id = p.Id "
+				+ "WHERE p.UserAnws = ? AND r.Pregunta_id is Null AND p.Categoria = ? "
+				+ "order by p.Id DESC ";
 		try {
-		PreparedStatement p = this.conn.prepareStatement(query);
+			PreparedStatement p;
+			if(Integer.parseInt(type) == 0) {
+				p = this.conn.prepareStatement(query);
+				p.setInt(1, Integer.parseInt(userId));
+				
+			}else {
+				p = this.conn.prepareStatement(queryConType);
+				p.setInt(1, Integer.parseInt(userId));
+				p.setInt(2, Integer.parseInt(type));	
+			}
 
-		p.setInt(1, Integer.parseInt(Id));
+		p.setInt(1, Integer.parseInt(userId));
 		ResultSet rs = p.executeQuery();
 
 		while (rs.next()) {
@@ -179,28 +167,44 @@ public class SqlConnector {
 		}
 		return Preguntas;
 	}
+	public List<PreguntaCR> getPreguntasCR(String userId,String type) {
 
-	public List<PreguntaCR> getPreguntasCR(String Id) {
 		List<PreguntaCR> Preguntas = new ArrayList<>();
 		String query = 
-				"SELECT p.Id as Id, p.Likes, p.Dislikes, p.Usefull, p.Texto, c.Nombre, u.Username, r.Texto as rText, r.Likes as rLikes , r.Dislikes as rDislikes, r.Usefull as rUseful "
+				"SELECT r.Id, p.Id as IdPregunta, p.Likes, p.Dislikes, p.Usefull, p.Texto, c.Nombre, u.Username, r.Texto as rText, r.Likes as rLikes , r.Dislikes as rDislikes, r.Usefull as rUseful "
 						+ "from Pregunta p "
 						+ "inner join Categoria c on c.Id = p.Categoria "
 						+ "left join User u on u.Id = p.UserPreg "
 						+ "inner join Respuesta r on r.Pregunta_id = p.Id "
 						+ "WHERE p.UserAnws = ? "
-						+ "order by p.Id DESC ";
+						+ "order by r.Id DESC ";
+		String queryConType = 
+						"SELECT r.Id, p.Id as IdPregunta, p.Categoria as Categoria, p.Likes, p.Dislikes, p.Usefull, p.Texto, c.Nombre, u.Username, r.Texto as rText, r.Likes as rLikes , r.Dislikes as rDislikes, r.Usefull as rUseful "
+								+ "from Pregunta p "
+								+ "inner join Categoria c on c.Id = p.Categoria "
+								+ "left join User u on u.Id = p.UserPreg "
+								+ "inner join Respuesta r on r.Pregunta_id = p.Id "
+								+ "WHERE p.UserAnws = ? AND p.Categoria = ?  "
+								+ "order by r.Id DESC ";
+		
 		try {
-			PreparedStatement p = this.conn.prepareStatement(query);
-	
-			p.setInt(1, Integer.parseInt(Id));
+			PreparedStatement p;
+			if(Integer.parseInt(type) == 0) {
+				p = this.conn.prepareStatement(query);
+				p.setInt(1, Integer.parseInt(userId));
+				
+			}else {
+				p = this.conn.prepareStatement(queryConType);
+				p.setInt(1, Integer.parseInt(userId));
+				p.setInt(2, Integer.parseInt(type));	
+			}
 			ResultSet rs = p.executeQuery();
 	
 			while (rs.next()) {
 	
 				PreguntaCR pregunta = new PreguntaCR();
 	
-				pregunta.setId(rs.getInt("Id"));
+				pregunta.setId(rs.getInt("IdPregunta"));
 				pregunta.setCategoria(rs.getString("Nombre"));
 				pregunta.setLikes(rs.getInt("Likes"));
 				pregunta.setUsefull(rs.getInt("Usefull"));
@@ -223,7 +227,6 @@ public class SqlConnector {
 		}
 		return Preguntas;
 	}
-
 	public List<User> getUsersCategoria(String Id) {
 
 		List<User> Usuarios = new ArrayList<>();
@@ -250,7 +253,6 @@ public class SqlConnector {
 		return Usuarios;
 
 	}
-
 	public List<Pregunta> getTopPreguntaCategoria(String topType) {
 		List<Pregunta> Preguntas = new ArrayList<>();
 		String query = "Select p.Likes, p.Dislikes as Dislikes, p.Usefull as Usefull, p.Texto, c.Nombre, Q.Username as uPreg,A.Username as uAnws "
@@ -286,7 +288,6 @@ public class SqlConnector {
 		return Preguntas;
 
 	}
-
 	public String insertPregunta(Pregunta datosPregunta)  {
 		// REMITENTE - CATEGORIA- TEXTO - DESTINATARIO - Token
 
@@ -347,7 +348,42 @@ public class SqlConnector {
 		return "It's ok";
 
 	}
+	public Boolean insertRespuesta(Pregunta datosRespuesta) {
+		String insert ="Insert Into Respuesta(Texto,Pregunta_id) VALUES(?,?)";
+		String select = "Select * from Respuesta where Pregunta_id = ?";
+		PreparedStatement p;
 
+		if(datosRespuesta.getToken().equals(getToken(datosRespuesta.getUserAnws()))) {
+			try {
+				
+				p = this.conn.prepareStatement(select);
+				p.setInt(1, datosRespuesta.getId());
+				ResultSet rs = p.executeQuery();
+				//Si no ha respondido ya a esta pregunta
+				if(!rs.next()) {
+					p = this.conn.prepareStatement(insert);
+					p.setString(1, datosRespuesta.getTexto());
+					p.setInt(2, datosRespuesta.getId());
+					p.executeUpdate();
+					
+					return true;
+					
+				}else {
+					return false;
+				}
+				
+				
+
+			} catch (SQLException e) {
+				// Error al insertar respuesta
+				System.out.println("Error insertando respuesta "+e.getMessage());
+
+			}
+			
+		}
+		return false;
+
+	}
 	public String login(User usuario) {
 		String query = "Select contraseña from User where Username = ?";
 		String pswd = null;
@@ -384,11 +420,11 @@ public class SqlConnector {
 		String username = usuario.getUsername();
 		String token = usuario.getToken();
 		Boolean status = false;
-		String query = "Select * FROM Token where Username = ?";
+		String query = "Select * FROM Token where Id = ?";
 		
 		try {
 			PreparedStatement p = this.conn.prepareStatement(query);
-			p.setString(1, username);
+			p.setInt(1, getUserIdByUsername(username));
 
 			ResultSet rs = p.executeQuery();
 			
@@ -404,8 +440,7 @@ public class SqlConnector {
 		}
 		return status;
 	}
-	
-	public String updateVotacionesP(Voto votacion) {
+	public Boolean updateVotacionesP(Voto votacion) {
 		String query = "select Pregunta "
 				+ "from Usuario_Vota_Pregunta "
 				+ "where Usuario = ? and Pregunta = ?";
@@ -442,14 +477,15 @@ public class SqlConnector {
 				query ="INSERT INTO Usuario_Vota_Pregunta VALUES ("+userID+","+votacion.getPregunta()+")";
 				p = this.conn.prepareStatement(query);
 				p.executeUpdate();	
+				return true;
 			}
 		} catch (SQLException e) {
 			// Error al votar una pregunta 
 			System.out.print("Error al votar una pregunta "+(e.getMessage()));
 		}
-		return "it's ok";
+		return false;
 	}
-	public String updateVotacionesR(Voto votacion) throws SQLException {
+	public Boolean updateVotacionesR(Voto votacion) {
 		
 		String query = "select Respuesta "
 				+ "from Usuario_Vota_Respuesta "
@@ -457,6 +493,7 @@ public class SqlConnector {
 		
 		int userID = getUserIdByUsername(votacion.getUsuario());
 
+		try {
 		PreparedStatement p = this.conn.prepareStatement(query);
 
 		p.setInt(1, userID);
@@ -467,19 +504,23 @@ public class SqlConnector {
 		// Si NO existe ya un registro de voto, que lo INSERTE
 		if (!rs.next()) {
 			
-			query = "Select "+votacion.getTipo()+" from Respuesta where Pregunta_id = ?";
-			String update = "update Respuesta set "+votacion.getTipo()+" = ? where Pregunta_id = "+votacion.getPregunta();
+			query = "Select "+votacion.getTipo()+" from Respuesta where Pregunta_Id = ?";
+			String update = "update Respuesta set "+votacion.getTipo()+" = ? where Pregunta_Id = "+votacion.getPregunta();
 
 			updateVotacion(votacion,query,update);
-			Integer remitente = getWhoIdByPreguntaId(votacion.getPregunta(),"UserAnws");
+			int remitente = getWhoIdByPreguntaId(votacion.getPregunta(),"UserAnws");
 
 			updateVotosUsuario(votacion,remitente);
 			
 			query ="INSERT INTO Usuario_Vota_Respuesta VALUES ("+userID+","+votacion.getPregunta()+")";
 			p = this.conn.prepareStatement(query);
 			p.executeUpdate();	
+			return true;
 		}
-		return "It's ok";
+		}catch(SQLException e) {
+			System.out.println("Error en unpdatevotacionesR "+e.getMessage());
+		}
+		return false;
 
 	}
 	public List<User> getUsersPopulares(){
@@ -526,6 +567,9 @@ public class SqlConnector {
 		usuario.setUsefull(rs.getInt("Usefull"));
 		usuario.setId(rs.getInt("Id"));
 		usuario.setBanner(rs.getString("Banner"));
+		usuario.setBio(rs.getString("Bio"));
+
+		
 		} catch (SQLException e) {
 			// Error reCojiendo usuarios
 			System.out.println("Error devolviendo un objeto usuario "+e.getMessage());
@@ -533,7 +577,7 @@ public class SqlConnector {
 		
 		return 	usuario;
 	}
-	private void updateVotosUsuario(Voto votacion, Integer remitente) {
+	private void updateVotosUsuario(Voto votacion, int remitente) {
 
 		//Recoje la votacion del usuario
 		String query = "SELECT "+votacion.getTipo()+" FROM User where Id = "+remitente;
@@ -565,7 +609,7 @@ public class SqlConnector {
 		PreparedStatement p;
 		try {
 			p = this.conn.prepareStatement(query);
-				
+			
 			p.setInt(1, votacion.getPregunta());
 			ResultSet puntuacionActual = p.executeQuery();
 			puntuacionActual.next();
@@ -586,7 +630,7 @@ public class SqlConnector {
 	}
 	//Devuelve quien es por el id de la pregunta
 	private int getWhoIdByPreguntaId(int idPregunta,String whoUpvote) {
-		String query = "select "+whoUpvote+" from Pregunta where id = "+idPregunta;
+		String query = "select "+whoUpvote+" from Pregunta where Id = "+idPregunta;
 		try {
 		PreparedStatement p = this.conn.prepareStatement(query);
 		ResultSet rs = p.executeQuery();
@@ -599,6 +643,20 @@ public class SqlConnector {
 			return 0;
 		}
 	}
+/*	private int getWhoIdByRespuestaId(int idPregunta,String whoUpvote) {
+		String query = "select p."+whoUpvote+" from Pregunta p inner join Respuesta r on p.Id = r.Pregunta_id where r.Id = "+idPregunta;
+		try {
+		PreparedStatement p = this.conn.prepareStatement(query);
+		ResultSet rs = p.executeQuery();
+		rs.next();
+		
+		return rs.getInt(whoUpvote);
+		} catch (SQLException e) {
+			// Error recojiendo el id
+			System.out.print("Error recojiendo un id a través de la respuesta, "+e.getMessage());
+			return 0;
+		}
+	}*/
 	//Devuelve el usuario por su nombre
 	private int getUserIdByUsername(String Username) {
 
@@ -619,9 +677,9 @@ public class SqlConnector {
 	}
 	private Boolean setToken(String Username, String createToken) {
 		
-		String query = "Select Token from Token where Username = ?";
+		String query = "Select Token from Token where Id = ?";
 
-		String insert = "INSERT INTO Token(Username, Token) VALUES (?,?)";
+		String insert = "INSERT INTO Token(Id, Token) VALUES (?,?)";
 		
 		PreparedStatement p;
 		
@@ -629,7 +687,7 @@ public class SqlConnector {
 
 			p = this.conn.prepareStatement(query);
 
-			p.setString(1,Username);
+			p.setInt(1,getUserIdByUsername(Username));
 
 			ResultSet rs = p.executeQuery();
 			//Si ya hay un token que devuelva true
@@ -640,7 +698,7 @@ public class SqlConnector {
 			else {
 				p = this.conn.prepareStatement(insert);
 	
-				p.setString(1,Username);
+				p.setInt(1,getUserIdByUsername(Username));
 				p.setString(2, createToken);
 				p.executeUpdate();
 				return true;
@@ -657,14 +715,14 @@ public class SqlConnector {
 	}
 	private String getToken(String username) {
 		// Devolverá token
-		String query = "Select Token from Token where Username = ?";
+		String query = "Select Token from Token where Id = ?";
 		
 		PreparedStatement p;
 		String token = null;
 		try {
 			
 			p = this.conn.prepareStatement(query);
-			p.setString(1,username);
+			p.setInt(1,getUserIdByUsername(username));
 			
 			ResultSet rs = p.executeQuery();
 
