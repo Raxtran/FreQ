@@ -458,26 +458,27 @@ public class SqlConnector {
 			p.setInt(2, votacion.getPregunta());
 			System.out.println(votacion);
 			ResultSet rs = p.executeQuery();
-				
+			if(votacion.getToken().equals(getToken(votacion.getUsuario()))) {
 			// Si NO existe ya un registro de voto, que lo INSERTE
-			if (!rs.next()) {
+				if (!rs.next()) {
+					
+					query = "Select "+votacion.getTipo()+" from Pregunta where id = ?";
+					String update = "update Pregunta set "+votacion.getTipo()+" = ? where Id = "+votacion.getPregunta();
+					
+					Integer remitente = getWhoIdByPreguntaId(votacion.getPregunta(), "UserPreg");
 				
-				query = "Select "+votacion.getTipo()+" from Pregunta where id = ?";
-				String update = "update Pregunta set "+votacion.getTipo()+" = ? where Id = "+votacion.getPregunta();
-				
-				Integer remitente = getWhoIdByPreguntaId(votacion.getPregunta(), "UserPreg");
-			
-				updateVotacion(votacion,query,update);
-
-				//Si el remitente no es null que le sume el voto a su cuenta
-				if(remitente != 0) {
-					updateVotosUsuario(votacion,remitente);
-				}			
-				//Con esto define que este usuario ya a votado la pregunta
-				query ="INSERT INTO Usuario_Vota_Pregunta VALUES ("+userID+","+votacion.getPregunta()+")";
-				p = this.conn.prepareStatement(query);
-				p.executeUpdate();	
-				return true;
+					updateVotacion(votacion,query,update);
+	
+					//Si el remitente no es null que le sume el voto a su cuenta
+					if(remitente != 0) {
+						updateVotosUsuario(votacion,remitente);
+					}			
+					//Con esto define que este usuario ya a votado la pregunta
+					query ="INSERT INTO Usuario_Vota_Pregunta VALUES ("+userID+","+votacion.getPregunta()+")";
+					p = this.conn.prepareStatement(query);
+					p.executeUpdate();	
+					return true;
+				}
 			}
 		} catch (SQLException e) {
 			// Error al votar una pregunta 
@@ -500,22 +501,24 @@ public class SqlConnector {
 		p.setInt(2, votacion.getPregunta());
 		System.out.println(votacion);
 		ResultSet rs = p.executeQuery();
-		
-		// Si NO existe ya un registro de voto, que lo INSERTE
-		if (!rs.next()) {
-			
-			query = "Select "+votacion.getTipo()+" from Respuesta where Pregunta_Id = ?";
-			String update = "update Respuesta set "+votacion.getTipo()+" = ? where Pregunta_Id = "+votacion.getPregunta();
-
-			updateVotacion(votacion,query,update);
-			int remitente = getWhoIdByPreguntaId(votacion.getPregunta(),"UserAnws");
-
-			updateVotosUsuario(votacion,remitente);
-			
-			query ="INSERT INTO Usuario_Vota_Respuesta VALUES ("+userID+","+votacion.getPregunta()+")";
-			p = this.conn.prepareStatement(query);
-			p.executeUpdate();	
-			return true;
+		if(votacion.getToken().equals(getToken(votacion.getUsuario()))) {
+	
+			// Si NO existe ya un registro de voto, que lo INSERTE
+			if (!rs.next()) {
+				
+				query = "Select "+votacion.getTipo()+" from Respuesta where Pregunta_Id = ?";
+				String update = "update Respuesta set "+votacion.getTipo()+" = ? where Pregunta_Id = "+votacion.getPregunta();
+	
+				updateVotacion(votacion,query,update);
+				int remitente = getWhoIdByPreguntaId(votacion.getPregunta(),"UserAnws");
+	
+				updateVotosUsuario(votacion,remitente);
+				
+				query ="INSERT INTO Usuario_Vota_Respuesta VALUES ("+userID+","+votacion.getPregunta()+")";
+				p = this.conn.prepareStatement(query);
+				p.executeUpdate();	
+				return true;
+			}
 		}
 		}catch(SQLException e) {
 			System.out.println("Error en unpdatevotacionesR "+e.getMessage());

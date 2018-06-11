@@ -5,6 +5,7 @@ public class Voto {
 	private String Usuario;
 	private int Pregunta;
 	private String Tipo;
+	private String token;
 	
 	public String getUsuario() {
 		return Usuario;
@@ -27,6 +28,12 @@ public class Voto {
 	@Override
 	public String toString() {
 		return "Voto [Usuario=" + Usuario + ", Pregunta=" + Pregunta + ", Tipo=" + Tipo + "]";
+	}
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 }
