@@ -1,0 +1,82 @@
+<div class="navbar ">
+  <div class="navbar-inner top-bar">
+    <div class="toolbar">
+
+      <a class="brand" routerLink="/">
+        <img src="../../assets/Img/Logo3.png" id="Logo" alt="Notif...ah no, pará FreQ">
+      </a>
+      <div class="collapsinator">
+        <button class="btn btn-navbar " data-toggle="collapse" data-target=".centered">
+          Secciones
+        </button>
+
+        <!--Collapse class aqui!-->
+        <div class="centered " role="navigation">
+          <ul class="nav mynab nav-bar ">
+            <li>
+              <a routerLink="/Categorias" class="intrabar">
+                Categorias</a>
+            </li>
+            <li>
+              <a routerLink="/Categorias/Populares" class="intrabar">
+                Populares</a>
+            </li>
+
+            <li>
+              <a routerLink="/Tops/Likes" class="intrabar">
+                Divertidos</a>
+            </li>
+
+            <li>
+              <a routerLink="/Tops/Usefull" class="intrabar">
+                Interesantes</a>
+            </li>
+            <li>
+              <a routerLink="/Tops/Dislikes" class="intrabar">
+                Desacuerdo</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <!-- Si hay usuario activo !-->
+      <div class="nav-user" *ngIf="usuario_activo != undefined">
+        <a routerLink="/User/{{usuario_activo}}" class="user">{{usuario_activo}}</a>
+        <p>
+          <a onclick="Salir">
+            <i class="cerrarSesion" (click)="exitUsuario()">Cerrar sesión </i>
+          </a>
+        </p>
+
+      </div>
+      <!-- Si no hay usuario activo -->
+      <div class="nav-user" *ngIf="usuario_activo == undefined">
+
+        <div id="wrap">
+          <div id="regbar">
+            <div id="navthing">
+              <h3>
+                <a href="#" (mouseover)="loginShowUp()" id="loginform">Login</a> |
+                <a href="#" class="Register">Register</a>
+              </h3>
+              <div class="login">
+                <div class="arrow-up"></div>
+                <div class="formholder">
+                  <div class="randompad">
+                    <fieldset>
+                      <label class="subBoxLogin" name="Username">Usuario</label>
+                      <input type="text" id="username" placeholder="Nombre de usuario" />
+                      <label class="subBoxLogin" name="password">Contraseña</label>
+                      <input type="password" id="password" placeholder="******" />
+                      <input type="submit" (click)="goLogin()" value="Login" />
+
+                    </fieldset>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

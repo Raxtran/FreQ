@@ -1,0 +1,99 @@
+<div class="content">
+  <div class="centered">
+    <div class="top">
+      <a class="com-user" (click)="changeColor(0)" id="Comentarios">
+        <div class="subtop">
+          <h1>Comentarios</h1>
+        </div>
+      </a>
+      <a class="com-user" (click)="changeColor(1)" id="Usuarios">
+        <div class="subtop">
+          <h1>Usuarios</h1>
+        </div>
+      </a>
+    </div>
+    <div class="Boxes" *ngIf="activaTop">
+      <div class="Perfil" *ngFor="let usuario of Usuarios ; let i = index ">
+
+        <a routerLink="/User/{{usuario.Username}}" class="button">
+          <div class="tagcontent" [ngStyle]="{'background-image': 'url('+usuario.Banner+')', 'background-size': 'cover' } ">
+
+
+            <div>
+              <img class="Pfp" src="{{usuario.Picture}}" alt="{{usuario.nombre}}">
+            </div>
+            <div class="subtagcontent">
+              <div class="subtagText">
+                <div>
+                  <h2 style="width:100%">{{usuario.Username}},</h2>
+                </div>
+                <!--Aqui van tambien las classes que domina el user-->
+                <div class="Categorias">
+                  <a style="padding-left: 15px;" *ngFor="let categoria of Categorias[i]">
+                    {{categoria.nombre}}
+                  </a>
+                </div>
+              </div>
+              <div class="subtagEmotes">
+                <a class="emoText">{{usuario.Likes}}
+                  <img class="emote" src="../../assets/Img/Like.png">
+                </a>
+                <a class="emoText">{{usuario.Usefull}}
+                  <img class="emote" src="../../assets/Img/Usefull.png">
+                </a>
+                <a class="emoText">{{usuario.Dislikes}}
+                  <img class="emote" src="../../assets/Img/Dislike.png">
+                </a>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="Boxes" *ngIf="!activaTop">
+        <div class="Preguntas" *ngFor="let comentario of Comentarios">
+      
+
+            <div class="preguntado">   
+                <h5><a routerLink="/User/{{comentario.UserAnws}}">{{comentario.UserAnws}} </a>  <i> responde</i> </h5> 
+              </div>
+              
+            <div class="Preguntas-text">
+              {{comentario.Texto}}
+
+            </div>
+    
+            
+            <div class="subtagEmotes pregunta-emotes-box">
+              <div>
+
+                <button class="buttonemote">
+    
+                  <a class="emoText pregunta-emotes">{{comentario.Likes}}
+                    <img class="emote pregunta-emote" src="../../assets/Img/Like.png">
+                  </a>
+                </button>
+                <button class="buttonemote">
+    
+                  <a class="emoText pregunta-emotes">{{comentario.Usefull}}
+                    <img class="emote pregunta-emote" src="../../assets/Img/Usefull.png">
+                  </a>
+                </button>
+                <button class="buttonemote">
+    
+                  <a class="emoText pregunta-emotes">{{comentario.Dislikes}}
+                    <img class="emote pregunta-emote" src="../../assets/Img/Dislike.png">
+                  </a>
+                </button>
+              </div>
+              <div class="Autor">
+                ~ <a routerLink="/User/{{comentario.UserPreg}}">{{comentario.UserPreg}} </a> 
+                sobre <a routerLink="/Categorias/{{comentario.Categoria}}" >{{comentario.Categoria}} </a>
+              </div>
+            </div>
+          </div>
+
+
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,223 @@
+#Logo{
+  margin-top: -12px;
+  margin-left: 5px;
+  border-radius: 12px;
+  width:87px;
+}
+.top-bar{
+  background-color: #f07049 !important;
+  border-bottom: 1px solid #8AACB5;
+}
+.navbar-inner{
+  height: 70px !important;
+}
+.user{
+  color: rgb(58, 58, 58) ;
+}
+.cerrarSesion{
+  font-size: 15px !important;
+  color: rgb(58, 58, 58) ;
+}
+.cerrarSesion:hover{
+  color: whitesmoke;
+  font-weight: bold;
+}
+.user:hover{
+  color: white;
+  font-weight: bold;
+}
+/*Clases para el fade in/out de login*/
+#wrap {
+  margin: 0 ;
+}
+#regbar {
+  height: 67px;
+}
+.subBoxLogin{
+  margin-left: 90px;
+  font-size: 18px;
+}
+fieldset {
+  border: none;
+}
+.login {
+  position: relative;
+  width: 280px;
+  display: none;
+}
+.arrow-up {
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 15px solid #00536B;
+  left: 10%;
+  position: absolute;
+  top: -10px;
+}
+.formholder {
+  background: #00536B;
+  width: 100%;
+  border-radius: 5px;
+  padding-top: 5px;
+}
+.formholder input[type="text"], .formholder input[type="password"] {
+  padding: 7px 5px;
+  margin: 10px 0;
+  width: 100%;
+  display: block;
+  font-size: 18px;
+  border-radius: 5px;
+  border: none;
+  -webkit-transition: 0.3s linear;
+  -moz-transition: 0.3s linear;
+  -o-transition: 0.3s linear;
+  transition: 0.3s linear;
+}
+.formholder input[type="email"]:focus, .formholder input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0 0 1px 1px #1abc9c;
+}
+.formholder input[type="submit"] {
+  background: #1abc9c;
+  padding: 10px;
+  font-size: 20px;
+  display: block;
+  width: 100%;
+  border: none;
+  color: #00536B;
+  border-radius: 5px;
+}
+.formholder input[type="submit"]:hover {
+  background: #1bc6a4;
+}
+.randompad {
+  padding: 10px;
+}
+.green {
+  color: #1abc9c;
+}
+a {
+  color: #ecf0f1;
+  text-decoration: none;
+}
+a:hover {
+  color: #1abc9c;
+}
+.Register{
+  text-decoration:line-through;
+  color: rgb(83, 83, 83);
+}
+@media screen and (min-width: 1267px) {
+  .intrabar{
+      background-color:#008DB1 ;
+      border-color:#00536B;
+      border: 1px solid rgb(7, 94, 116);
+      font-size: 18px;
+      border-radius: 2px !important;
+      display: flex;
+      justify-content: center !important;
+      align-content: center !important;
+      height: 43px !important;
+      width: 180px !important;
+      margin-top: 4px;
+      margin-right: -28px;
+ }
+  .intrabar:hover{
+      background-color:rgb(6, 188, 233) ;
+      font-size: 19px !important;
+      color: #afeffc !important;
+      width: 190px !important;
+ }
+  li{
+      margin-right: 0px !important;
+ }
+  .nav-user{
+      float: right;
+      margin-top:25px;
+      font-size: 20px;
+ }
+}
+@media screen and (max-width: 1267px) {
+  .btn-navbar{
+      align-self: center;
+      height: 5px !important;
+      background-color: transparent;
+      border: 1px solid black;
+ }
+  .intrabar{
+      width: 13vw !important;
+      background-color:#008DB1 ;
+      border-color:#00536B;
+      border: 1px solid rgb(7, 94, 116);
+      font-size: 14px !important;
+      border-radius: 2px !important;
+      display: flex;
+      align-self: center;
+      justify-content: center;
+ }
+  .centered{
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+ }
+  li{
+      margin: 22px 1px 22px 0px !important 
+ }
+  .navbar-inner{
+      height: 70px !important;
+ }
+  .toolbar{
+      display: flex;
+ }
+  .nav-user{
+      position: absolute;
+      right: 0;
+ }
+}
+@media screen and (max-width: 981px) {
+  .btn-navbar{
+      align-self: center;
+      width: 100%;
+      height: 70px !important;
+      border-bottom: none;
+      text-align:center; 
+      vertical-align:middle;
+      font-size: 5vh;
+      font-weight: bold;
+    }
+    .btn-navbar:hover{
+      background-color: transparent;
+    }.btn-navbar:focus{
+      background-color: transparent;
+    }
+    .intrabar{
+      width: 55vw !important;
+      background-color:#008DB1 ;
+      border-color:rgb(31, 31, 31);
+      border: 1px solid rgb(61, 61, 61);
+      font-size: 14px !important;
+      border-radius: 2px !important;
+      display: flex;
+      align-self: center;
+      justify-content: center;
+ }
+ li{
+   margin:0px 0px 0px 0px !important;
+ }
+    .mynab{
+      margin: 0px;
+      display: flex;
+      background-color: rgb(221, 221, 221);
+      display: flex;
+      flex-direction: column;
+    }
+    .collapsinator{
+      display: flex;
+      flex-wrap:wrap;
+      flex-direction: column;
+      background-color: rgba(255, 255, 255, 0);
+    }
+
+}

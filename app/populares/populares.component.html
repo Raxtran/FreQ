@@ -1,0 +1,49 @@
+<div class="content">
+  <div class="centered">
+    <div class="top">
+      <a class="com-user" id="Comentarios">
+        <div class="subtop">
+          <h1>TOP 10 Usuarios populares</h1>
+        </div>
+      </a>
+    </div>
+    <div class="Boxes">
+      <div class="Perfil" *ngFor="let usuario of Usuarios ; let i = index ">
+
+        <a href="http://localhost:4200/User/{{usuario.Username}}" class="button">
+          <div class="tagcontent" [ngStyle]="{'background-image': 'url('+usuario.Banner+')', 'background-size': 'cover' } ">
+
+
+            <div>
+              <img class="Pfp" src="{{usuario.Picture}}" alt="{{usuario.nombre}}">
+            </div>
+            <div class="subtagcontent">
+              <div class="subtagText">
+                <div>
+                  <h2 style="width:100%">{{usuario.Username}},</h2>
+                </div>
+                <!--Aqui van tambien las classes que domina el user-->
+                <div class="Categorias">
+                  <a style="padding-left: 15px;" *ngFor="let categoria of Categorias[i]">
+                    {{categoria.nombre}}
+                  </a>
+                </div>
+              </div>
+              <div class="subtagEmotes">
+                <a class="emoText">{{usuario.Likes}}
+                  <img class="emote" src="../../assets/Img/Like.png">
+                </a>
+                <a class="emoText">{{usuario.Usefull}}
+                  <img class="emote" src="../../assets/Img/Usefull.png">
+                </a>
+                <a class="emoText">{{usuario.Dislikes}}
+                  <img class="emote" src="../../assets/Img/Dislike.png">
+                </a>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="central">
+  <div class="clases">
+    <div class="Categoria" *ngFor="let usuario of Usuarios">
+      <a href="http://localhost:4200/User/{{usuario.Username}}" class="button">
+        <div class="content">
+          <div class="pfpclass">
+            <img src="{{usuario.Picture}}" class="Pfp" alt="{{usuario.Username}}">
+          </div>
+          <h2>{{usuario.Username}}</h2>
+          <div class="emoteSub">
+            <div class="emoteBox">{{usuario.Likes}}
+              <img class="emote" src="../../assets/Img/Like.png"> </div>
+            <div class="emoteBox">{{usuario.Usefull}}
+              <img class="emote" src="../../assets/Img/Usefull.png">
+            </div>
+            <div class="emoteBox"> {{usuario.Dislikes}}
+              <img class="emote" src="../../assets/Img/Dislike.png">
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
