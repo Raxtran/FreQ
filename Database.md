@@ -1,3 +1,4 @@
+### MySql create tables, alter tables, updates...
 ```sql
 create  TABLE  user  (  
 id  INT  auto_increment  NOT  NULL,  
@@ -72,4 +73,66 @@ ALTER  TABLE  categoria  ADD  imagen  VARCHAR(500)  DEFAULT  "https://i.redd.it/
 update `user`  
 SET  banner  =  "https://preview.ibb.co/mw4Rao/Banner.png"  
 WHERE  username  =  "Raxtran";
+```
+### SQL Create tables
+```
+create table Usuario(
+Id int not null identity , 
+Username varchar(30) not null, 
+Contraseña varchar(65) not null,
+Bio varchar(700), 
+Picture varchar(300) default 'https://cdn4.iconfinder.com/data/icons/eldorado-user/40/user-512.png', 
+Banner varchar(500), 
+Likes int default 0, 
+Usefull int default 0, 
+Dislikes int default 0,
+
+constraint user_pk PRIMARY KEY (Id),
+constraint user_unique UNIQUE (Username) 
+);
+
+
+CREATE TABLE Categoria(
+Id int NOT NULL identity,
+Nombre varchar(30) NOT NULL
+PRIMARY KEY (Id)
+)
+
+
+
+create table Pregunta(
+	Id int not null Identity, 
+	Texto varchar(700) not null, 
+	Likes int default 0, 
+	Usefull int default 0, 
+	Dislikes int default 0, 
+	Categoria int not null ,
+	UserPreg int null, 
+	UserAnws int not null, 
+	
+	PRIMARY KEY (Id), 
+constraint UserPregunta_fk foreign key (UserPreg) references Usuario(Id), 
+constraint UserRecibePregunta_fk foreign key (UserAnws) references Usuario(Id) ,
+constraint Pregunta_Categoria_fk foreign key (Categoria) references Categoria(Id) 
+
+);
+
+create table Token(
+	Id int not null,
+	Token varchar(38) not null,
+	PRIMARY key (Id, Token),
+	constraint token_a_user_fk foreign key (Id) references Usuario(Id), 
+)
+
+create table Respuesta (
+	Id int not null identity,
+	Texto varchar(500) not null,
+	Likes int default 0,
+	Usefull int default 0,
+	Dislikes int default 0,
+	Pregunta_id int not null,
+	PRIMARY key (Id),
+	constraint fk_respuesta_a_pregunta FOREIGN KEY (Pregunta_id) 
+	references Pregunta(Id)
+) 
 ```
