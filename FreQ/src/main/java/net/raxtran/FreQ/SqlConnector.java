@@ -499,7 +499,6 @@ public class SqlConnector {
 
 		p.setInt(1, userID);
 		p.setInt(2, votacion.getPregunta());
-		System.out.println(votacion);
 		ResultSet rs = p.executeQuery();
 		if(votacion.getToken().equals(getToken(votacion.getUsuario()))) {
 	
@@ -646,20 +645,6 @@ public class SqlConnector {
 			return 0;
 		}
 	}
-/*	private int getWhoIdByRespuestaId(int idPregunta,String whoUpvote) {
-		String query = "select p."+whoUpvote+" from Pregunta p inner join Respuesta r on p.Id = r.Pregunta_id where r.Id = "+idPregunta;
-		try {
-		PreparedStatement p = this.conn.prepareStatement(query);
-		ResultSet rs = p.executeQuery();
-		rs.next();
-		
-		return rs.getInt(whoUpvote);
-		} catch (SQLException e) {
-			// Error recojiendo el id
-			System.out.print("Error recojiendo un id a través de la respuesta, "+e.getMessage());
-			return 0;
-		}
-	}*/
 	//Devuelve el usuario por su nombre
 	private int getUserIdByUsername(String Username) {
 

@@ -2,10 +2,8 @@ package net.raxtran.FreQ;
 
 import java.sql.SQLException;
 import java.util.List;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-
 import static spark.Spark.*;
 
 public class App {
@@ -38,8 +36,10 @@ public class App {
 	}
 
 	public static void main(String[] args) throws SQLException {
+		
+		
 		SqlConnector sql = new SqlConnector();
-
+		
 		enableCORS();
 		//Devuelve un usuario a traves de su id 
 		get("/User/:id", (request, response) -> {
