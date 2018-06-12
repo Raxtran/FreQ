@@ -171,10 +171,35 @@ a:hover {
   .toolbar{
       display: flex;
  }
-  .nav-user{
-      position: absolute;
-      right: 0;
- }
+ .nav-user{
+  float: right;
+  margin-top:25px;
+  font-size: 20px;
+}
+ 
+.login {
+  position: relative;
+  width: 18vw;
+  display: none;
+}
+.subBoxLogin{
+  text-align: center;
+  margin-left: -5px;
+  font-size: 18px;
+}
+}
+@media (min-width:1267px) and (max-width:1368px) {
+  .login {
+    position: relative;
+    width: 12vw;
+    display: none;
+}
+
+.subBoxLogin{
+  text-align: center;
+  margin-left: -5px;
+  font-size: 18px;
+}
 }
 @media screen and (max-width: 981px) {
   .btn-navbar{
@@ -193,7 +218,7 @@ a:hover {
       background-color: transparent;
     }
     .intrabar{
-      width: 55vw !important;
+      width: 53vw !important;
       background-color:#008DB1 ;
       border-color:rgb(31, 31, 31);
       border: 1px solid rgb(61, 61, 61);
@@ -219,5 +244,19 @@ a:hover {
       flex-direction: column;
       background-color: rgba(255, 255, 255, 0);
     }
+    .nav-user{
+      position: absolute;
+      right: 0;
+ }.login {
+  position: relative;
+  width: 20vw;
+  display: none;
+}
+.subBoxLogin{
+  text-align: center;
+  margin-left: -5px;
+  font-size: 18px;
+}
+
 
 }

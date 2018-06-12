@@ -6,12 +6,12 @@
         <img src="../../assets/Img/Logo3.png" id="Logo" alt="Notif...ah no, pará FreQ">
       </a>
       <div class="collapsinator">
-        <button class="btn btn-navbar " data-toggle="collapse" data-target=".centered">
+        <button class="btn btn-navbar " (click)="toolBar()" >
           Secciones
         </button>
 
         <!--Collapse class aqui!-->
-        <div class="centered " role="navigation">
+        <div class="centered" id="collapsableBar" role="navigation">
           <ul class="nav mynab nav-bar ">
             <li>
               <a routerLink="/Categorias" class="intrabar">

@@ -322,4 +322,62 @@ textarea{
         overflow-y: auto;
     }
 }
+@media screen and (max-width: 981px) {
+    .Center-top{
+        width: 96vw;
+    }
+    #left{
+        display: flex;
+        margin-left: 2%;
+        flex-direction: row;
+        
+    }
+    .content{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .pfp{
+        height: 100%;
+        margin:0 auto;
+        border-right: transparent;
+        border-radius: 8px 0px 0px 8px;
+    }
+    .BGbox{
+        width: 100%;
+        align-items: center;
+        border-radius: 0px 8px 8px 0px;
+        border-left: transparent;
+
+    }
+    .img{
+        width: 170px;
+        height: 150px;
+
+    }
+    .form{
+        width: 90%;
+        margin-bottom: -25px;
+    }
+    .catdomTT{
+        width: 100%;
+    }
+    .Enviar{
+        margin-bottom: 8px;
+    }
+    .Chooses-opciones{
+    width: 100%;
+    }
+    .Chooses-buttons-encapsulacion{
+        width:150px;
+    }
+    .Center-bottom-master{
+        width: 100%;
+    }
+    .Center{
+        width: 98%;
+    }
+
+}
+
   

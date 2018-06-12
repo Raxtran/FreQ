@@ -2,7 +2,7 @@
   <div id="left">
 
     <div class="pfp">
-      <img src="{{Usuario.Picture}}" alt="perfil" width="250">
+      <img src="{{Usuario.Picture}}" alt="perfil" class="img" width="250">
     </div>
     <div class="BGbox">
       <div>
@@ -13,6 +13,7 @@
       </div>
       <div class="Domina">
         <a class="catdomTT">Categorias que domina este usuario:</a>
+        
         <div class="catdom" *ngFor="let Categoria of Categorias">
           <a routerLink="/Categorias/{{Categoria.nombre}}">
             {{Categoria.nombre}}
@@ -59,7 +60,7 @@
       </div>
     </div>
     <div class="Chooses">
-      <div *ngFor="let Categoria of Categorias">
+      <div class="Chooses-buttons-encapsulacion" *ngFor="let Categoria of Categorias">
         <button class="Chooses-opciones" (click)="getPreguntas(Categoria.id)">
           {{Categoria.nombre}}
         </button>

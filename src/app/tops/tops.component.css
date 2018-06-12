@@ -145,4 +145,64 @@ a{
     
     }
 }
+
+@media screen and (max-width: 981px) {
+    .tagcontent{
+        display: flex;
+        flex-direction:row;
+        justify-content: space-between;
+    }
+    .subtagcontent{
+        display: flex;
+        flex-direction: row-reverse;
+        width: 100%;
+        align-content: center;
+        margin-left: 15px;
+        
+    }
+
+    .Perfil{
+        background-color: #FCA385;
+        margin-bottom: 25px;
+    }
+    .Pfp{
+        height: 100px;
+        width: 150px !important;
+    }
+    .Boxes{
+        width:100%;
+    }
+    .top{
+        width: 100%;
+    }
+    .imagen{
+        height: 100%;
+    }
+    .sub_emotes{
+        display: flex  !important;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        width: 75px;
+    }
+    .subtagText{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: baseline;
+    }
+    #username{
+        align-self: center;
+    }
+    .Preguntas-text{
+        color: black;
+        font-weight: bold;
+        margin: 8px 0px 15px 14px;
+        padding-right: 25px;
+        width: 100%;
+    }
+    .Preguntas{
+        margin-left: 0px !important;
+        
+    }
+}
   

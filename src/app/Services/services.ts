@@ -100,14 +100,14 @@ export class Requestes {
     getUsuarioQuePregunta(){
         return localStorage.getItem("usuario_que_pregunta")    
     }
-    updateVotacionP(User,Tipo,Pregunta){
+    updateVotacionP(User,Tipo,Pregunta,Token){
         
-        let params = { usuario : User, pregunta: Pregunta, tipo: Tipo  };
-        alert(params.pregunta)
+        let params = { usuario : User, pregunta: Pregunta, tipo: Tipo, token:Token  };
+
         return this.httpclient.put("http://localhost:4567/updateVotacionP", params)
     }
-    updateVotacionR(User,Tipo,Pregunta){
-        let params = { usuario : User, pregunta: Pregunta, tipo: Tipo  };
+    updateVotacionR(User,Tipo,Pregunta,Token){
+        let params = { usuario : User, pregunta: Pregunta, tipo: Tipo, token:Token  };
 
         return this.httpclient.put("http://localhost:4567/updateVotacionR", params)
     }

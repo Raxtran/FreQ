@@ -41,7 +41,7 @@ export class WebContentComponent implements OnInit {
         //Get categorias dominadas
         this.httpc.getCategoriaDominante(this.Usuario.id).subscribe(res => {
           this.Categorias = res;
-          console.log(this.Categorias)
+
         });
         //Get preguntas hacia él
         this.getPreguntas(0);
@@ -125,21 +125,20 @@ export class WebContentComponent implements OnInit {
   }
   updateVotacionPregunta(Tipo, preguntaId) {
 
-    this.httpc.updateVotacionP(this.httpc.getUsuarioConectado(), Tipo, preguntaId).subscribe(res => {
+    this.httpc.updateVotacionP(this.httpc.getUsuarioConectado(), Tipo, preguntaId,this.httpc.getToken()).subscribe(res => {
     this.getPreguntas(0);
     });
 
   }
   updateVotacionRespuesta(Tipo, preguntaId) {
 
-    this.httpc.updateVotacionR(this.httpc.getUsuarioConectado(), Tipo, preguntaId).subscribe(res => {
+    this.httpc.updateVotacionR(this.httpc.getUsuarioConectado(), Tipo, preguntaId,this.httpc.getToken()).subscribe(res => {
       this.getPreguntas(0);
     });
 
   }
   //Para poder responder a una pregunta
   responderShowUp() {
-          console.log(this.Id+" "+this.usuario_activo)
 
     if(this.Id == this.usuario_activo){
       //Hace que aparezca la respuesta

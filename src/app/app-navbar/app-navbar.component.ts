@@ -17,7 +17,20 @@ export class AppNavbarComponent implements OnInit {
 
   ngOnInit() {
     this.usuario_activo = localStorage.getItem("usuario_activo");
-    console.log("usuario activo de localstorage " + this.usuario_activo)
+    
+    //Jquery para el navbar, asi se guarda la barra sola cada vez que se redimensiona
+    $( window ).resize(function() {
+      if($(window).width() > 981 ){
+        var x = document.getElementById("collapsableBar");
+        x.className = "centered";
+        
+      }
+      else {
+        var x = document.getElementById("collapsableBar");
+        x.className = "centered collapse";
+        
+      }
+    });
   }
 
   loginShowUp() {
@@ -72,8 +85,14 @@ export class AppNavbarComponent implements OnInit {
       }
 
     }) ;
-
-    
+  }
+  toolBar(){
+    var x = document.getElementById("collapsableBar");
+    if (x.className === "centered") {
+        x.className += " collapse";
+    } else {
+        x.className = "centered";
+    }
   }
 
 }
