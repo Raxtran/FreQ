@@ -13,7 +13,7 @@ export class AppNavbarComponent implements OnInit {
 
   constructor(private httpc: Requestes, private activatedRoute: ActivatedRoute, private router: Router) { }
 
-  private usuario_activo;
+  usuario_activo;
 
   ngOnInit() {
     this.usuario_activo = localStorage.getItem("usuario_activo");

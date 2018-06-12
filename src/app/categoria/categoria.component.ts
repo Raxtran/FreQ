@@ -13,7 +13,7 @@ import { Requestes } from '../Services/services';
 })
 export class CategoriaComponent implements OnInit {
 
-  private Categorias;
+  Categorias;
 
   constructor(private httpc: Requestes) {
 

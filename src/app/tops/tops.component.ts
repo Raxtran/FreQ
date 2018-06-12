@@ -13,9 +13,9 @@ export class TopsComponent implements OnInit {
 
   private Usuarios;
   private Categorias = [];
-  private activaTop: Boolean = true;
-  private Comentarios;
-  private usuario_activo;
+  activaTop: Boolean = true;
+  Comentarios;
+  usuario_activo;
   constructor(private httpc: Requestes, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {  

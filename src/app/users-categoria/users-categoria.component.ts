@@ -9,7 +9,7 @@ import { Requestes } from '../Services/services';
 })
 export class UsersCategoriaComponent implements OnInit {
 
-  private Usuarios ;
+  Usuarios ;
 
 
   constructor(private httpc: Requestes, private activatedRoute: ActivatedRoute) { }

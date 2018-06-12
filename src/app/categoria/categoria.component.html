@@ -1,7 +1,7 @@
 <div class="central">
   <div class="clases">
     <div class="Categoria" *ngFor="let categoria of Categorias">
-      <a href="http://localhost:4200/Categorias/{{categoria.nombre}}" class="button">
+      <a routerLink="/Categorias/{{categoria.nombre}}" class="button">
         <div class="content">
           <div >
             <img src="{{categoria.imagen}}" class="categoriaImage" alt="{{categoria.nombre}}">

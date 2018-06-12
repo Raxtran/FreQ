@@ -12,10 +12,10 @@ export class WebContentComponent implements OnInit {
 
   constructor(private httpc: Requestes, private activatedRoute: ActivatedRoute, private router: Router) { }
 
-  private Categorias;
+  Categorias;
   private Usuario;
-  private Preguntas;
-  private exists: boolean = false;
+  Preguntas;
+  exists: boolean = false;
   private hayRespuestas;
   private preguntaStatus;
   private usuario_activo;

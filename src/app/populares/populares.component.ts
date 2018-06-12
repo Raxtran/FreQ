@@ -9,8 +9,8 @@ import { Requestes } from '../Services/services';
 export class PopularesComponent implements OnInit {
 
   constructor(private httpc: Requestes) { }
-  private Usuarios;
-  private Categorias = [];
+  Usuarios;
+  Categorias = [];
 
   ngOnInit() {
     this.httpc.getUsersPopu().subscribe(res => {
